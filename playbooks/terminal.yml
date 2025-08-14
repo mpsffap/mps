@@ -1,0 +1,11 @@
+---
+- name: Setup mps terminal
+  hosts: hive
+  become: true
+  roles:
+    # - terminal-essentials
+    - terminal-homedir
+    # - terminal-shells
+    # - terminal-vim
+    # - terminal-fonts
+    # - terminal-nvim

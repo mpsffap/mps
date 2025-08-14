@@ -1,0 +1,37 @@
+# Create directories under ~/mps
+- name: Create mps folders
+  ansible.builtin.file:
+    path: "{{ target_user_dir }}/mps/{{ item }}"
+    state: directory
+    owner: "{{ target_user }}"
+    group: "{{ target_user }}"
+    mode: "0700"
+  loop: "{{ mps.mps_folders }}"
+
+- name: Copy git config
+  ansible.builtin.copy:
+    src: "{{ mps.src_dotfiles }}/{{ item }}"
+    dest: "{{ target_user_dir }}/{{ item }}"
+    owner: "{{ target_user }}"
+    group: "{{ target_user }}"
+    mode: "0700"
+  loop: "{{ mps.git_config }}"
+  when: mps.git_config is defined
+
+- name: Copy other config files
+  ansible.builtin.copy:
+    src: "{{ mps.src_dotfiles }}/.config/{{ item }}"
+    dest: "{{ target_user_dir }}/.config/"
+    owner: "{{ target_user }}"
+    group: "{{ target_user }}"
+    mode: "0700"
+  loop: "{{ mps.other_dotfiles }}"
+  when: mps.other_dotfiles is defined
+
+- name: Copy snippets
+  ansible.builtin.copy:
+    src: "{{ mps.src_snippets }}"
+    dest: "{{ target_user_dir }}/mps/"
+    owner: "{{ target_user }}"
+    group: "{{ target_user }}"
+    mode: "0700"

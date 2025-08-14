@@ -1,0 +1,5 @@
+---
+- name: Include rofi essential apt packages
+  ansible.builtin.include_tasks: essentials.yml
+- name: Include rofi configs
+  ansible.builtin.include_tasks: config.yml

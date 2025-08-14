@@ -1,0 +1,43 @@
+---
+- name: Create directory for Rustup installation
+  ansible.builtin.file:
+    path: "{{ mps.dst_tools }}/rustup"
+    state: directory
+    mode: "0755"
+
+- name: Download rustup installation script
+  ansible.builtin.get_url:
+    url: "{{ mps.url_rustup }}"
+    dest: "{{ mps.dst_rustup_sh }}"
+    mode: "0755"
+
+- name: Run rustup installation script
+  ansible.builtin.shell:
+    cmd: "{{ mps.dst_rustup_sh }} -y"
+    creates: "{{ target_user_dir }}/.cargo/env"
+  become: true
+  become_user: "{{ target_user }}"
+
+- name: Add Rust to PATH
+  ansible.builtin.lineinfile:
+    path: "{{ target_user_dir }}/.bashrc"
+    line: "export PATH=$PATH:~/.cargo/bin"
+    state: present
+  become: true
+  become_user: "{{ target_user }}"
+
+- name: Source .cargo/env file to set up Rust environment
+  ansible.builtin.shell:
+    cmd: "source {{ target_user_dir }}/.cargo/env"
+    executable: /bin/bash
+  become: true
+  become_user: "{{ target_user }}"
+
+- name: Install Cargo tools
+  ansible.builtin.shell:
+    cmd: "cargo install fd-find tree-sitter-cli"
+  environment:
+    CARGO_HOME: "{{ target_user_dir }}/.cargo"
+    PATH: "{{ ansible_env.PATH }}:{{ target_user_dir }}/.cargo/bin"
+  become: true
+  become_user: "{{ target_user }}"

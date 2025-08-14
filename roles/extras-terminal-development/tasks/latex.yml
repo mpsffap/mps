@@ -1,0 +1,7 @@
+---
+- name: Install essentials latex
+  ansible.builtin.apt:
+    name:
+      - texlive-full
+    state: present
+  become: true

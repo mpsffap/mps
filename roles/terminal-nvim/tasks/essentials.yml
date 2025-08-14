@@ -1,0 +1,51 @@
+- name: Install nvim
+  become: true
+  ansible.builtin.apt:
+    name:
+      - python3-pip
+      - lazygit
+      - npm
+      - git
+      - make
+      - gcc
+      - gdb
+      - wget
+      - bzip2
+      - curl
+      - build-essential
+      - lldb
+      - libncurses-dev
+      - ruby
+      - npm
+      - fzf
+      - fd-find
+      - rr
+      - ripgrep
+      - shellcheck
+      - xclip
+      - xsel
+      - luarocks
+      - chktex
+      - python3
+      - python3-venv
+      - python3-pip
+      - black
+      - flake8
+      - pylint
+      - mypy
+      - python3-neovim
+      - python3-pynvim
+
+- name: Install pip packages
+  ansible.builtin.pip:
+    name:
+      - ruff-lsp
+      - debugpy
+      - pynvim
+    state: present
+    extra_args: "--break-system-packages"
+  become: true
+
+- name: Install npm packages globally
+  ansible.builtin.command:
+    cmd: "npm install -g neovim vint luacheck"

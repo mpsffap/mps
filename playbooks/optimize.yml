@@ -1,0 +1,10 @@
+---
+- name: Setup mps optimizations
+  hosts: hive
+  become: true
+  roles:
+    - optimize-grubmenu
+    - optimize-lightdm
+    - optimize-ramdisks
+    - optimize-zram
+    # - optimize-tty

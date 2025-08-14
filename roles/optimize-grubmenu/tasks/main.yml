@@ -1,0 +1,56 @@
+---
+- name: Copy grub themes
+  ansible.builtin.copy:
+    src: "{{ mps.src_themefiles }}/{{ item }}"
+    dest: "{{ mps.dst_themefiles }}/"
+    owner: "{{ target_user }}"
+    group: "{{ target_user }}"
+    mode: "0700"
+  loop: "{{ mps.grub_themes }}"
+  when: mps.grub_themes is defined
+
+- name: Copy grub icons
+  ansible.builtin.copy:
+    src: "{{ mps.src_iconfiles }}/{{ item }}"
+    dest: "{{ mps.dst_iconfiles }}/"
+    owner: "{{ target_user }}"
+    group: "{{ target_user }}"
+    mode: "0700"
+  loop: "{{ mps.grub_icons }}"
+  when: mps.grub_icons is defined
+
+- name: Ensure GRUB_GFXMODE
+  lineinfile:
+    path: /etc/default/grub
+    regexp: "^GRUB_GFXMODE="
+    line: "GRUB_GFXMODE=1920x1080"
+    state: present
+
+- name: Ensure GRUB_THEME
+  lineinfile:
+    path: /etc/default/grub
+    regexp: "^GRUB_THEME="
+    line: 'GRUB_THEME="/boot/grub/themes/{{ mps.grub_theme }}/theme.txt"'
+    state: present
+
+- name: Ensure Hostname
+  lineinfile:
+    path: "/boot/grub/themes/{{ mps.grub_theme }}/theme.txt"
+    regexp: 'text = "Host: CFG_HOST"'
+    line: '  text = "Host: {{ inventory_hostname }}"'
+    state: present
+
+- name: Ensure Version
+  lineinfile:
+    path: "/boot/grub/themes/{{ mps.grub_theme }}/theme.txt"
+    regexp: 'text = "VERSION: CFG_VERSION"'
+    line: '  text = "VERSION: {{ mps.version }}"'
+    state: present
+
+- name: Update grub
+  ansible.builtin.shell:
+    cmd: "update-grub"
+  become: true
+  become_user: "root"
+  register: cmdoutput
+  changed_when: cmdoutput.rc == 0

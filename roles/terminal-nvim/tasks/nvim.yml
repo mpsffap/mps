@@ -1,0 +1,28 @@
+---
+- name: Create directory for Neovim installation
+  ansible.builtin.file:
+    path: "{{ mps.dst_neovim }}"
+    state: directory
+    mode: "0755"
+
+- name: Download Neovim tarball
+  ansible.builtin.get_url:
+    url: "{{ mps.url_neovim }}"
+    dest: "{{ mps.dst_neovim }}/nvim-linux-x86_64.tar.gz"
+
+- name: Extract Neovim tarball
+  ansible.builtin.unarchive:
+    src: "{{ mps.dst_neovim }}/nvim-linux-x86_64.tar.gz"
+    dest: "{{ mps.dst_neovim }}/"
+    remote_src: true
+
+- name: Remove nvim package binary
+  ansible.builtin.file:
+    path: "/usr/bin/nvim"
+    state: absent
+
+- name: Create symlink for nvim
+  ansible.builtin.file:
+    src: "/opt/mps/tools/nvim/nvim-linux-x86_64/bin/nvim"
+    dest: "/usr/local/bin/nvim"
+    state: link

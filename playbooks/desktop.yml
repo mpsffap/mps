@@ -1,0 +1,8 @@
+---
+- name: Setup mps desktop
+  hosts: hive
+  become: true
+  roles:
+    - desktop-essentials
+    - desktop-qtile
+    - desktop-rofi

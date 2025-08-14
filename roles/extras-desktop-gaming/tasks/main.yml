@@ -1,0 +1,9 @@
+---
+- name: Include gaming essential apt packages
+  ansible.builtin.include_tasks: essentials.yml
+- name: Include nvidia essential apt packages
+  ansible.builtin.include_tasks: nvidia.yml
+# - name: Include lutris packages
+#   ansible.builtin.include_tasks: lutris.yml
+# - name: Include dxvk packages
+#   ansible.builtin.include_tasks: dxvk.yml

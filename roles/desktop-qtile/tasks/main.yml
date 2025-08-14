@@ -1,0 +1,5 @@
+---
+- name: Include qtile essentials
+  ansible.builtin.include_tasks: essentials.yml
+- name: Include qtile configs
+  ansible.builtin.include_tasks: config.yml

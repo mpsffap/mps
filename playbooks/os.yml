@@ -1,0 +1,6 @@
+---
+- name: Setup mps terminal
+  hosts: hive
+  become: true
+  roles:
+    - os-essentials-debian13

@@ -1,0 +1,5 @@
+---
+- name: Include essential apt packages
+  ansible.builtin.include_tasks: essentials.yml
+- name: Include configs
+  ansible.builtin.include_tasks: config.yml

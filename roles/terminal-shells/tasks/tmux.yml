@@ -1,0 +1,19 @@
+- name: Copy tmux config
+  ansible.builtin.copy:
+    src: "{{ mps.src_dotfiles }}/{{ item }}"
+    dest: "{{ target_user_dir }}/.config"
+    owner: "{{ target_user }}"
+    group: "{{ target_user }}"
+    mode: "0700"
+  loop: "{{ mps.tmux_files }}"
+  when: mps.tmux_files is defined
+
+- name: Copy tmuxinator config
+  ansible.builtin.copy:
+    src: "{{ mps.src_dotfiles }}/{{ item }}"
+    dest: "{{ target_user_dir }}/.config"
+    owner: "{{ target_user }}"
+    group: "{{ target_user }}"
+    mode: "0700"
+  loop: "{{ mps.tmuxinator_files }}"
+  when: mps.tmuxinator_files is defined

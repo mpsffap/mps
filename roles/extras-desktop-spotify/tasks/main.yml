@@ -1,0 +1,14 @@
+---
+- name: Add spotify repo key
+  ansible.builtin.apt_key:
+    url: "{{ mps.url_spotify_key }}"
+
+- name: Add repository
+  ansible.builtin.apt_repository:
+    repo: "deb {{ mps.url_spotify_repo }} stable non-free"
+
+- name: Install spotify
+  ansible.builtin.apt:
+    name: spotify-client
+    update_cache: true
+    state: present

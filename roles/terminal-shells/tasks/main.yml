@@ -1,0 +1,7 @@
+---
+- name: Include bash config
+  ansible.builtin.include_tasks: bash.yml
+- name: Include zsh config
+  ansible.builtin.include_tasks: zsh.yml
+- name: Include tmux config
+  ansible.builtin.include_tasks: tmux.yml

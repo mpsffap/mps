@@ -1,0 +1,68 @@
+- name: Install zsh
+  become: true
+  ansible.builtin.apt:
+    name:
+      - zsh
+
+- name: Download ohmyzsh
+  ansible.builtin.get_url:
+    url: "{{ mps.url_ohmyzsh }}"
+    dest: "{{ target_user_dir }}/ohmyzsh.sh"
+    owner: "{{ target_user }}"
+    group: "{{ target_user }}"
+    mode: "0700"
+    validate_certs: no
+
+- name: Delete zsh config
+  ansible.builtin.file:
+    path: "{{ target_user_dir }}/.oh-my-zsh"
+    owner: "{{ target_user }}"
+    group: "{{ target_user }}"
+    state: "absent"
+
+- name: Change Ownership zsh config
+  ansible.builtin.file:
+    path: "{{ target_user_dir }}/ohmyzsh.sh"
+    owner: "{{ target_user }}"
+    group: "{{ target_user }}"
+    mode: "0770"
+
+- name: Exec ohmyzsh
+  ansible.builtin.shell:
+    cmd: 'bash -c "echo n | {{ target_user_dir }}/ohmyzsh.sh"'
+  become: true
+  become_user: "{{ target_user }}"
+  register: zshoutput
+  changed_when: zshoutput.rc == 0
+
+- name: Delete ohmyzsh
+  ansible.builtin.file:
+    path: "{{ target_user_dir }}/ohmyzsh.sh"
+    state: "absent"
+
+- name: Copy zsh config
+  ansible.builtin.copy:
+    src: "{{ mps.src_dotfiles }}/{{ item }}"
+    dest: "{{ target_user_dir }}/{{ item }}"
+    owner: "{{ target_user }}"
+    group: "{{ target_user }}"
+    mode: "0700"
+  loop: "{{ mps.zsh_files }}"
+  when: mps.zsh_files is defined
+
+- name: Delete zsh config
+  ansible.builtin.file:
+    path: "{{ target_user_dir }}/.oh-my-zsh/custom/plugins/"
+    state: "absent"
+
+- name: Clone zsh repos
+  ansible.builtin.git:
+    repo: "{{ item.value }}"
+    dest: "{{ target_user_dir }}/.oh-my-zsh/custom/plugins/{{ item.key }}"
+    bare: false
+    update: false
+    clone: true
+    single_branch: true
+    version: "master"
+  loop: "{{ mps.zsh_plugins | dict2items }}"
+  when: mps.zsh_plugins is defined

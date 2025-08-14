@@ -1,0 +1,24 @@
+---
+- name: Ensure keyrings directory exists
+  ansible.builtins.file:
+    path: "/etc/apt/keyrings"
+    state: directory
+    mode: "0755"
+
+- name: Download Lutris GPG key and dearmor
+  ansible.builtins.shell: |
+    curl -fsSL {{ mps.url_lutris_key_url }} | gpg --dearmor | tee {{ mps.url_lutris_key_path }} > /dev/null
+  args:
+    creates: "{{ mps.url_lutris_key_path }}"
+
+- name: Add Lutris APT repository
+  ansible.builtins.apt_repository:
+    repo: "deb [signed-by={{ mps.url_lutris_key_path }}] {{ mps.url_lutris_repo }} /"
+    filename: "lutris"
+    state: present
+    update_cache: true
+
+- name: Install Lutris
+  ansible.builtins.apt:
+    name: lutris
+    state: present

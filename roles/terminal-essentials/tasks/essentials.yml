@@ -1,0 +1,98 @@
+---
+- name: Essentials OS
+  ansible.builtin.apt:
+    name:
+      - curl
+      - wget
+      - ca-certificates
+      - gnupg
+      - apt-utils
+      - apt-transport-https
+      - vim
+      - lsb-release
+      - debconf
+      - debconf-utils
+      - fontconfig
+      - psutils
+      - psmisc
+      - htop
+    state: present
+  become: true
+
+- name: Essentials FILES
+  ansible.builtin.apt:
+    name:
+      - fd-find
+      - fzf
+      - bat
+      - tree
+      - ranger
+      - ncdu
+      - zoxide
+      - entr
+      - ripgrep
+      - jq
+    state: present
+  become: true
+
+- name: Essentials ARCHIVES
+  ansible.builtin.apt:
+    name:
+      - zip
+      - unzip
+      - bzip2
+      - attr
+      - dtrx
+    state: present
+  become: true
+
+- name: Essentials CONSOLE TOOLS
+  ansible.builtin.apt:
+    name:
+      - cowsay
+      - figlet
+      - fortune
+      - fortunes-de
+      - cmatrix
+      - console-setup
+      - bash-completion
+      - kitty
+      - tmux
+      - tmuxinator
+      - bsdmainutils
+    state: present
+  become: true
+
+- name: Essentials BUILD ESSENTIALS
+  ansible.builtin.apt:
+    name:
+      - gcc
+      - gdb
+      - lldb
+      - build-essential
+      - check
+      - flex
+      - bison
+      - automake
+    state: present
+  become: true
+
+- name: Essentials Networking
+  ansible.builtin.apt:
+    name:
+      - net-tools
+      - bind9-dnsutils
+      - bridge-utils
+      - iptables
+      - tcpdump
+      - uml-utilities
+      - traceroute
+      - netcat-traditional
+      - iw
+      - ssh
+      - nmap
+      - dnsutils
+      - iftop
+      - sysstat
+    state: present
+  become: true

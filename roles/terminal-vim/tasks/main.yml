@@ -1,0 +1,15 @@
+- name: Install vim
+  become: true
+  ansible.builtin.apt:
+    name:
+      - vim
+
+- name: Copy vim config
+  ansible.builtin.copy:
+    src: "{{ mps.src_dotfiles }}/{{ item }}"
+    dest: "{{ target_user_dir }}/{{ item }}"
+    owner: "{{ target_user }}"
+    group: "{{ target_user }}"
+    mode: "0700"
+  loop: "{{ mps.vim_files }}"
+  when: mps.vim_files is defined

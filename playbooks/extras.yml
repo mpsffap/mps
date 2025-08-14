@@ -1,0 +1,8 @@
+---
+- name: Setup mps extras
+  hosts: hive
+  become: true
+  roles:
+    - extras-terminal-development
+    - extras-desktop-spotify
+    - extras-desktop-gaming

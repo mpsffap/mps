@@ -1,0 +1,37 @@
+---
+- name: Add i386 architecture
+  ansible.builtin.command: dpkg --add-architecture i386
+  become: true
+  args:
+    creates: /var/lib/dpkg/arch
+
+- name: Ensure apt cache is updated
+  ansible.builtin.apt:
+    update-cache: true
+
+- name: Install essentials gaming
+  ansible.builtin.apt:
+    name:
+      - meson
+      - glslang-tools
+      - libgl1-mesa-dri:i386
+      - mesa-vulkan-drivers
+      - mesa-vulkan-drivers:i386
+      - wine
+      - winetricks
+      - wine64
+      - wine32
+      - goverlay
+      - mangohud
+      - gamemode
+      - steam
+      - libasound2-plugins:i386
+      - libsdl2-2.0-0:i386
+      - libdbus-1-3:i386
+      - libsqlite3-0:i386
+      - libvulkan1
+      - libvulkan1:i386
+      - gcc-multilib
+      - g++-multilib
+    state: present
+  become: true

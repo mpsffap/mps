@@ -1,0 +1,21 @@
+---
+- name: Download dotnet-install.sh script
+  ansible.builtin.get_url:
+    url: "{{ mps.url_dotnet_installer }}"
+    dest: /tmp/dotnet-install.sh
+    owner: "{{ target_user }}"
+    group: "{{ target_user }}"
+    mode: "0700"
+
+- name: Make the dotnet-install.sh script executable
+  ansible.builtin.file:
+    path: /tmp/dotnet-install.sh
+    mode: "u+x"
+
+- name: Run dotnet-install.sh script
+  ansible.builtin.command: /tmp/dotnet-install.sh --version latest
+
+- name: Remove dotnet-install.sh script
+  ansible.builtin.file:
+    path: /tmp/dotnet-install.sh
+    state: absent

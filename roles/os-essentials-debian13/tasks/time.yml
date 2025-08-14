@@ -1,0 +1,11 @@
+---
+- name: Set timezone
+  community.general.timezone:
+    name: "{{ mps.timezone }}"
+
+- name: Essentials Timezone
+  ansible.builtin.apt:
+    name:
+      - chrony
+    state: present
+  become: true

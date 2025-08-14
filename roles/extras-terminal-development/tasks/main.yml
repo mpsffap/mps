@@ -1,0 +1,13 @@
+---
+- name: Include docker task
+  ansible.builtin.include_tasks: docker.yml
+# - name: Include dotnet configs
+#   ansible.builtin.include_tasks: dotnet.yml
+# - name: Include java task
+#   ansible.builtin.include_tasks: java.yml
+# - name: Include latex configs
+#   ansible.builtin.include_tasks: latex.yml
+# - name: Include python configs
+#   ansible.builtin.include_tasks: python.yml
+# - name: Include unity configs
+#   ansible.builtin.include_tasks: unity.yml
