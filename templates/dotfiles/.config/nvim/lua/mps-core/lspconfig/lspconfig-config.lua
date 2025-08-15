@@ -357,6 +357,36 @@ local config = function()
 		root_dir = lspconfig.util.root_pattern(".csproject"),
 		-- Additional configuration can be added here
 	})
+	lspconfig.ansiblels.setup({
+		filetypes = {
+			"yaml",
+			"yml",
+		},
+		settings = {
+			ansible = {
+				ansible = {
+					path = "ansible",
+					useFullyQualifiedCollectionNames = true,
+				},
+				ansibleLint = {
+					enabled = true,
+					path = "ansible-lint",
+				},
+				executionEnvironment = {
+					enabled = false,
+				},
+				python = {
+					interpreterPath = "python",
+				},
+				completion = {
+					provideRedirectModules = true,
+					provideModuleOptionAliases = true,
+				},
+			},
+		},
+		on_attach = on_attach,
+		capabilities = capabilities,
+	})
 	-- ############################################################################
 	-- # Linters
 	-- ############################################################################
@@ -365,6 +395,7 @@ local config = function()
 	local eslint_d = require("efmls-configs.linters.eslint_d")
 	local shellcheck = require("efmls-configs.linters.shellcheck")
 	local stylint = require("efmls-configs.linters.stylelint")
+	local ansible_lint = require("efmls-configs.linters.ansible_lint")
 	local hadolint = require("efmls-configs.linters.hadolint")
 	local markdownlint = require("efmls-configs.linters.markdownlint")
 	local jqlint = require("efmls-configs.linters.jq")
@@ -474,6 +505,7 @@ local config = function()
 				xslt = { xmllint, xmlformatter },
 				svg = { xmllint, xmlformatter },
 				yaml = { yamllint, prettierd },
+				ansiblels = { ansible_lint, prettierd },
 				yml = { yamllint, prettierd },
 				toml = { eslint_d, taplo },
 				lsp = { eslint_d, taplo },

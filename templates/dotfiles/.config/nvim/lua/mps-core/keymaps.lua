@@ -115,6 +115,9 @@ K.map("n", "<A-v>", "<cmd>lua require('swenv.api').pick_venv()<CR>", { desc = "S
 K.map("n", "<leader>Ä", "<cmd>BrowserSearch<CR>", { desc = "Search word via searchprovider" })
 K.map("v", "<leader>ä", "<Plug>SearchVisual", { desc = "Search Visual" })
 
+-- Oil
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+
 -- END OF ACCEPTED
 
 -- OLD KEYBINDS

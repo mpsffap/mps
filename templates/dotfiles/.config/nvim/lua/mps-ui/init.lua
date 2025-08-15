@@ -5,6 +5,7 @@ M.getplugins = function()
 		require("mps-ui.blankindent.blankindent-repo"),
 		require("mps-ui.bufferline.bufferline-repo"),
 		require("mps-ui.lualine.lualine-repo"),
+		require("mps-ui.flash.flash-repo"),
 		require("mps-ui.gitsigns.gitsigns-repo"),
 		require("mps-ui.windows.windows-repo"),
 		require("mps-ui.alpha.alpha-repo"),
@@ -20,6 +21,7 @@ M.configure = function()
 	require("mps-ui.barbecue.barbecue-config")
 	require("mps-ui.blankindent.blankindent-config")
 	require("mps-ui.bufferline.bufferline-config")
+	require("mps-ui.flash.flash-config")
 	require("mps-ui.lualine.lualine-config")
 	require("mps-ui.windows.windows-config")
 	require("mps-ui.alpha.alpha-config")

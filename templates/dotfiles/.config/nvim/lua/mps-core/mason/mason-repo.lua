@@ -5,6 +5,8 @@ local opts = {
 		"lua-language-server",
 		"luacheck",
 		"typescript-language-server",
+		"ansible-language-server",
+		"ansible-lint",
 		"prettier",
 		"prettierd",
 		"eslint_d",

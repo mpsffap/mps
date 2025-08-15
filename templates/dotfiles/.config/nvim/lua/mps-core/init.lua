@@ -4,6 +4,7 @@ M.getplugins = function()
 		require("mps-core.mason.mason-repo"),
 		require("mps-core.treesitter.treesitter-repo"),
 		require("mps-core.neoconf.neoconf-repo"),
+		require("mps-core.oil.oil-repo"),
 		require("mps-core.lspconfig.lspconfig-repo"),
 		require("mps-core.lspsaga.lspsaga-repo"),
 		require("mps-core.telescope.telescope-repo"),
@@ -23,6 +24,7 @@ M.configure = function()
 	-- Configure
 	require("mps-core.treesitter.treesitter-config")
 	require("mps-core.neoconf.neoconf-config")
+	require("mps-core.oil.oil-config")
 	require("mps-core.lspconfig.lspconfig-config")
 	require("mps-core.lspsaga.lspsaga-config")
 	require("mps-core.telescope.telescope-config")
