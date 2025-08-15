@@ -1,8 +1,8 @@
 ---
-# - name: Include essential apt packages
-#   ansible.builtin.include_tasks: essentials.yml
-# - name: Include essential cargo packages
-#   ansible.builtin.include_tasks: cargo.yml
+- name: Include essential apt packages
+  ansible.builtin.include_tasks: essentials.yml
+- name: Include essential cargo packages
+  ansible.builtin.include_tasks: cargo.yml
 - name: Include nvim package
   ansible.builtin.include_tasks: nvim.yml
 - name: Include nvim configs

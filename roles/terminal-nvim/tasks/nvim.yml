@@ -23,6 +23,6 @@
 
 - name: Create symlink for nvim
   ansible.builtin.file:
-    src: "/opt/mps/tools/nvim/nvim-linux-x86_64/bin/nvim"
+    src: "{{ mps.dst_neovim }}/nvim-linux-x86_64/bin/nvim"
     dest: "/usr/local/bin/nvim"
     state: link

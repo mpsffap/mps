@@ -1,11 +1,21 @@
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Install vim-plug if not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+\| endif
+
 call plug#begin()
 Plug 'gruvbox-community/gruvbox'
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'preservim/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'nvim-lua/plenary.nvim'
@@ -18,11 +28,8 @@ call plug#end()
 syntax on
 set number
 set relativenumber
-colorscheme elflord
-if has('nvim')
-	set background=dark
-	colorscheme gruvbox
-endif
+colorscheme retrobox
+set background=dark
 set signcolumn=yes
 set colorcolumn=80
 set cursorline
@@ -67,8 +74,8 @@ autocmd FileType make set noexpandtab shiftwidth=4 softtabstop=0
 " Navigate files
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Harpoon Link: https://github.com/ThePrimeagen/harpoon 
-nnoremap <leader>hh :lua require("harpoon.ui").toggle_quick_menu()<CR>
-nnoremap <leader>ha :lua require("harpoon.mark").add_file()<CR>
+nnoremap <leader>hm :lua require("harpoon.ui").toggle_quick_menu()<CR>
+nnoremap <leader>hx :lua require("harpoon.mark").add_file()<CR>
 nnoremap <C-y> :lua require("harpoon.ui").nav_next()<CR>
 nnoremap <C-x> :lua require("harpoon.ui").nav_prev()<CR>
 " Telescope
@@ -77,10 +84,10 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
-nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
+" "nnoremap <C-e> :NERDTreeFocus<CR>
+" nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-e> :NERDTreeToggle<CR>
+" nnoremap <C-f> :NERDTreeFind<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Motions 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

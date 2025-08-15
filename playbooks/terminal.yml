@@ -3,9 +3,9 @@
   hosts: hive
   become: true
   roles:
-    # - terminal-essentials
+    - terminal-essentials
     - terminal-homedir
-    # - terminal-shells
-    # - terminal-vim
-    # - terminal-fonts
-    # - terminal-nvim
+    - terminal-shells
+    - terminal-vim
+    - terminal-fonts
+    - terminal-nvim

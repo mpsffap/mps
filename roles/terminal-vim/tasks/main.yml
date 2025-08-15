@@ -2,7 +2,11 @@
   become: true
   ansible.builtin.apt:
     name:
-      - vim
+      - liblua5.3-dev
+      - liblua5.1-dev
+      - lua5.1
+      - lua5.3
+      - vim-nox
 
 - name: Copy vim config
   ansible.builtin.copy:
@@ -13,3 +17,8 @@
     mode: "0700"
   loop: "{{ mps.vim_files }}"
   when: mps.vim_files is defined
+# - name: Exec PlugiVnstall
+#   ansible.builtin.shell:
+#     cmd: 'vim -es -u {{ target_user_dir }}/.vimrc -i NONE -c "PlugInstall" -c "qa"'
+#   become: true
+#   become_user: "{{ target_user }}"
