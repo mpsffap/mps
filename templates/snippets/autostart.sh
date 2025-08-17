@@ -5,9 +5,9 @@ SNIPPETS=~/mps/snippets
 "$SNIPPETS"/autostart_clean.sh
 
 # Setup X
-PRIMARY_DISPLAY=HDMI-0
+PRIMARY_DISPLAY=HDMI-1
 PRIMARY_SCALE=1.0x1.0
-SECONDARY_DISPLAY=DP-0
+SECONDARY_DISPLAY=DP-1
 SECONDARY_SCALE=1.6x1.6
 
 xrandr --output "$PRIMARY_DISPLAY" --primary --auto --mode 3840x2160 --pos 0x0 --scale "$PRIMARY_SCALE" --rotate normal \
@@ -47,4 +47,4 @@ $(sleep 3 && "$COMPOSITOR" --backend xrender) &
 
 # Default tmux sessions
 #kitty bash -c "tmux new-session -d -s scratchpad -c ~/mps/scratch"
-kitty bash -c "tmuxinator start scratchpad &"
+# kitty bash -c "tmuxinator start scratchpad &"

@@ -19,18 +19,19 @@ class MpsGroups(object):
             ),
             Group(
                 "4",
-                spawn="gnome-system-monitor",
-                label="4 󰨇 ",
+                label="4 󰍺 ",
                 matches=[
-                    Match(wm_class="gnome-system-monitor"),
-                    Match(wm_class="Thunar"),
+                    Match(wm_class="qemu"),
                 ],
-                layout="monadwide",
+                layout="monadtall",
             ),
             Group(
                 "5",
-                label="5 󰍺 ",
-                matches=[Match(wm_class="qemu")],
+                spawn="gnome-system-monitor",
+                label="5 󰨇 ",
+                matches=[
+                    Match(wm_class="gnome-system-monitor"),
+                ],
                 layout="monadtall",
             ),
             Group("6", label="6 󰦖 ", matches=[], layout="monadtall"),
@@ -39,6 +40,7 @@ class MpsGroups(object):
                 label="7  ",
                 matches=[
                     Match(wm_class="thunderbird-default"),
+                    Match(wm_class="org.gnome.Evolution"),
                     Match(wm_class="zoom"),
                     Match(wm_class="mumble"),
                 ],

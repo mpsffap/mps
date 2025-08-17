@@ -5,6 +5,6 @@
   roles:
     - optimize-grubmenu
     - optimize-lightdm
-    - optimize-ramdisks
-    - optimize-zram
+    # - optimize-ramdisks
+    # - optimize-zram
     # - optimize-tty

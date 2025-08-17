@@ -25,7 +25,7 @@ mps:
   dst_iconfiles: "/boot/grub/icons"
   dst_images: "/usr/share/images/mps"
   dst_qtile_repo: "/usr/share/mps/tools/qtile"
-  dst_snippets: "{{ target_user_dir }}/mps/snippets"
+  dst_snippets: "/usr/share/rofi/themes"
   dst_mpsnvim: "{{ target_user_dir }}/mps/repo/github/odem/mps"
   dst_unity_key: "/usr/share/keyrings/Unity_Technologies_ApS.gpg"
   dst_nvidia_mok_key: "/var/lib/dkms/mok.pub"
@@ -67,6 +67,7 @@ mps:
   dsk_essentials:
     - ".gtkrc-2.0"
     - ".config/Thunar"
+    - ".config/xfce4"
     - ".config/gtk-2.0"
     - ".config/gtk-3.0"
   dsk_snippets:
@@ -76,8 +77,6 @@ mps:
     - .config/dconf
     - .config/dunst
     - .config/gedit
-    - .config/volumeicon
-    - .config/birdtray-config.json
     - .config/picom.conf
 
   # -- Rofi
@@ -105,13 +104,10 @@ mps:
     - iso
     - repo
     - tools
-    - vm
     - disks
     - docs
-    - wsp
     - secrets
     - venv
-    - vpn
 
   # -- Shell
   zsh_plugins:
@@ -126,14 +122,7 @@ mps:
   tmuxinator_files:
     - .config/tmuxinator
   other_dotfiles:
-    - dconf
-    - dunst
-    - gedit
-    - gtk-2.0
-    - gtk-3.0
     - kitty
-    - Thunar
-    - volumeicon
 
     # -- Git
   git_config:

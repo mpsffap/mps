@@ -1,3 +1,3 @@
 [hive]
-mps ansible_user=root ansible_port=2224
+localhost ansible_user=root ansible_port=22
 

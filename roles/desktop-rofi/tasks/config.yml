@@ -2,7 +2,7 @@
 - name: Copy rofi snippets
   ansible.builtin.copy:
     src: "{{ mps.src_snippets }}/{{ item }}"
-    dest: "{{ mps.dst_snippets }}/{{ item }}"
+    dest: "{{ mps.dst_snippets }}"
     owner: "{{ target_user }}"
     group: "{{ target_user }}"
     mode: "0700"

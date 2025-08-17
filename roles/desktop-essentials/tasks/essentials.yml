@@ -13,6 +13,17 @@
       - zoxide
       - kitty
       - tilda
+      - thunderbird
+      - firefox-esr
+      - thunar
+      - thunar-archive-plugin
+      - thunar-media-tags-plugin
+      - thunar-volman
+      - thunar-gtkhash
+      - xfce4-goodies
+      - xfce4-places-plugin
+      - thunar-font-manager
+      - thunarx-python
       - ssh-askpass
     state: present
   become: true
@@ -29,7 +40,6 @@
       - volumeicon-alsa
       - libmpg123-dev
       - lxde-icon-theme
-      - gnome-extra-icons
       - dconf-cli
       - dconf-editor
       - dunst
@@ -43,6 +53,7 @@
       - gnome-system-monitor
       - network-manager-gnome
       - gnome-screenshot
+      - gnome-extra-icons
       - gedit
       - gedit-plugins
     state: present

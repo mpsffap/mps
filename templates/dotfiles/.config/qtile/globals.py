@@ -59,16 +59,16 @@ marginBar = [1, 4, 1, 4]
 widthBorder = 1
 gapsWindow = 3
 wallpapers = {
-    "1": f"{home}/.config/images/wallpaper/wormhole.jpg",
-    "2": f"{home}/.config/images/wallpaper/moon.jpg",
-    "3": f"{home}/.config/images/wallpaper/mountains.jpg",
-    "4": f"{home}/.config/images/wallpaper/zwielicht.jpg",
-    "5": f"{home}/.config/images/wallpaper/mainframe.jpg",
-    "6": f"{home}/.config/images/wallpaper/backyard.jpg",
-    "7": f"{home}/.config/images/wallpaper/mobile.jpg",
-    "8": f"{home}/.config/images/wallpaper/tarkov.jpg",
-    "9": f"{home}/.config/images/wallpaper/guitar.jpg",
-    "0": f"{home}/.config/images/wallpaper/vorschlag.jpg",
+    "1": "/usr/share/images/mps/wallpaper/wormhole.jpg",
+    "2": "/usr/share/images/mps/wallpaper/moon.jpg",
+    "3": "/usr/share/images/mps/wallpaper/mountains.jpg",
+    "4": "/usr/share/images/mps/wallpaper/zwielicht.jpg",
+    "5": "/usr/share/images/mps/wallpaper/mainframe.jpg",
+    "6": "/usr/share/images/mps/wallpaper/backyard.jpg",
+    "7": "/usr/share/images/mps/wallpaper/mobile.jpg",
+    "8": "/usr/share/images/mps/wallpaper/tarkov.jpg",
+    "9": "/usr/share/images/mps/wallpaper/guitar.jpg",
+    "0": "/usr/share/images/mps/wallpaper/vorschlag.jpg",
 }
 widget_defaults = dict(
     font="JetBrainsMono Nerd Font",
