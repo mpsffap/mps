@@ -1,11 +1,15 @@
 ---
 - name: Add spotify repo key
-  ansible.builtin.apt_key:
-    url: "{{ mps.url_spotify_key }}"
+  block:
+    - name: somerepo |no apt key
+      ansible.builtin.get_url:
+        url: "{{ mps.url_spotify_key }}"
+        dest: /etc/apt/trusted.gpg.d/spotify.asc
 
-- name: Add repository
-  ansible.builtin.apt_repository:
-    repo: "deb {{ mps.url_spotify_repo }} stable non-free"
+    - name: somerepo | apt source
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/spotify.asc] {{ mps.url_spotify_key }}  stable non-free"
+        state: present
 
 - name: Install spotify
   ansible.builtin.apt:
