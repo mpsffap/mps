@@ -1,17 +1,12 @@
 ---
-- name: Add spotify repo key
-  block:
-    - name: somerepo |no apt key
-      ansible.builtin.get_url:
-        url: "{{ mps.url_spotify_key }}"
-        dest: /etc/apt/trusted.gpg.d/spotify.asc
-      become: true
-
-    - name: somerepo | apt source
-      ansible.builtin.apt_repository:
-        repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/spotify.asc] {{ mps.url_spotify_key }}  stable non-free"
-        state: present
-      become: true
+- name: Install Spotify apt key
+  become: true
+  ansible.builtin.shell: "curl -sS https://download.spotify.com/debian/pubkey_C85668DF69375001.gpg | gpg --dearmor --yes -o /etc/apt/keyrings/spotify.gpg"
+- name: Add Spotify apt repository
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/spotify.gpg] http://repository.spotify.com stable non-free"
+    state: present
 
 - name: Install spotify
   ansible.builtin.apt:
