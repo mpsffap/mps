@@ -5,14 +5,17 @@
       ansible.builtin.get_url:
         url: "{{ mps.url_spotify_key }}"
         dest: /etc/apt/trusted.gpg.d/spotify.asc
+      become: true
 
     - name: somerepo | apt source
       ansible.builtin.apt_repository:
         repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/spotify.asc] {{ mps.url_spotify_key }}  stable non-free"
         state: present
+      become: true
 
 - name: Install spotify
   ansible.builtin.apt:
     name: spotify-client
     update_cache: true
     state: present
+  become: true
