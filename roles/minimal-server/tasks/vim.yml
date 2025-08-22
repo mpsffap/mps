@@ -17,8 +17,3 @@
     mode: "0700"
   loop: "{{ vim_files }}"
   when: vim_files is defined
-# - name: Exec PlugiVnstall
-#   ansible.builtin.shell:
-#     cmd: 'vim -es -u {{ target_user_dir }}/.vimrc -i NONE -c "PlugInstall" -c "qa"'
-#   become: true
-#   become_user: "{{ target_user }}"

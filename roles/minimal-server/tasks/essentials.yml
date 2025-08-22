@@ -1,0 +1,38 @@
+---
+- name: Essentials ARCHIVES
+  ansible.builtin.apt:
+    name:
+      - zip
+      - unzip
+      - bzip2
+      - attr
+      - dtrx
+    state: present
+  become: true
+
+- name: Essentials Networking
+  ansible.builtin.apt:
+    name:
+      - net-tools
+      - bind9-dnsutils
+      - bridge-utils
+      - iptables
+      - tcpdump
+      - uml-utilities
+      - traceroute
+      - netcat-traditional
+      - iw
+      - ssh
+      - nmap
+      - dnsutils
+      - isc-dhcp-client
+    state: present
+  become: true
+
+- name: Essentials Stats
+  ansible.builtin.apt:
+    name:
+      - iftop
+      - sysstat
+    state: present
+  become: true

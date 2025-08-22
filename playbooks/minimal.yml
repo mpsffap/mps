@@ -1,0 +1,8 @@
+---
+- name: Setup mps minimal
+  hosts: hive
+  become: true
+  roles:
+    - minimal-os
+    - minimal-files
+    - minimal-server

@@ -6,7 +6,5 @@
     - terminal-essentials
     - terminal-homedir
     - terminal-shells
-    - terminal-vim
     - terminal-fonts
-    - terminal-files
     - terminal-nvim

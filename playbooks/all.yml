@@ -1,6 +1,6 @@
 ---
-- name: Include os playbook
-  ansible.builtin.import_playbook: os.yml
+- name: Include minimal playbook
+  ansible.builtin.import_playbook: minimal.yml
 - name: Include luks playbook
   ansible.builtin.import_playbook: user.yml
 - name: Include terminal playbook

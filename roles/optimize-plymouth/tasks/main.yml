@@ -29,6 +29,12 @@
     regexp: "joy"
     replace: "{{ grub_theme }}"
 
+- name: Replace string in a file
+  ansible.builtin.replace:
+    path: "/usr/share/plymouth/themes/{{ grub_theme }}/{{ grub_theme }}.plymouth"
+    regexp: "joy"
+    replace: "{{ grub_theme }}"
+
 - name: Ensure Version
   copy:
     src: "/boot/grub/themes/{{ grub_theme }}/background.png"
