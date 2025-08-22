@@ -3,8 +3,9 @@
   hosts: hive
   become: true
   roles:
-    - optimize-grubmenu
+    # - optimize-grubmenu
     # - optimize-lightdm
+    - optimize-plymouth
     # - optimize-ramdisks
     # - optimize-zram
     # - optimize-tty

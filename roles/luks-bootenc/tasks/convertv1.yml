@@ -3,7 +3,7 @@
   block:
     - name: Get LUKS version of the device
       become: true
-      shell: |
+      ansible.builtin.shell: |
         cryptsetup luksDump {{ luks_part }} \
         | grep '^Version:' \
         | tr -d '\t ' \
@@ -15,22 +15,22 @@
       become: true
       block:
         - name: Remove existing GRUB_CMDLINE_LINUX_DEFAULT lines from /etc/default/grub
-          lineinfile:
+          ansible.builtin.lineinfile:
             path: /etc/default/grub
             regexp: "^GRUB_CMDLINE_LINUX_DEFAULT="
             state: absent
 
         - name: Add GRUB_CMDLINE_LINUX_DEFAULT with break=mount to /etc/default/grub
-          lineinfile:
+          ansible.builtin.lineinfile:
             path: /etc/default/grub
             line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet splash break=mount"'
             insertafter: EOF
 
         - name: Update grub configuration
-          command: update-grub
+          ansible.builtin.command: update-grub
 
         - name: Write the initramfs run_once script
-          copy:
+          ansible.builtin.copy:
             dest: /etc/initramfs-tools/scripts/init-premount/run_once
             mode: "0755"
             content: |
@@ -66,5 +66,5 @@
               exit 0
 
         - name: Update initramfs image
-          command: update-initramfs -u
+          ansible.builtin.command: update-initramfs -u
       when: luks_version.stdout | trim == '2'

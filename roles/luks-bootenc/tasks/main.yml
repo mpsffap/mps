@@ -1,5 +1,5 @@
 - name: Get list of identity names for this host
-  set_fact:
+  ansible.builtin.set_fact:
     host_config: >-
       {{
         config_hosts.hosts[inventory_hostname]
@@ -9,7 +9,7 @@
 
 - name: Include first stage
   ansible.builtin.include_tasks: convertv1.yml
-# - name: Include second stage
-#   ansible.builtin.include_tasks: movepart.yml
+- name: Include second stage
+  ansible.builtin.include_tasks: movepart.yml
 - name: Include third stage
   ansible.builtin.include_tasks: addkey.yml
