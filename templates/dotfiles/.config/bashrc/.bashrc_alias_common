@@ -11,9 +11,12 @@ alias pd='sudo apt remove'
 alias puu='sudo apt update && sudo apt upgrade && sudo apt autoremove'
 alias cmmi='./configure && make && sudo make install'
 
-# ls
+# zoxide
 alias zz='z -'
 alias zq='zoxide query'
+
+# zoxide
+alias y='yazi'
 
 # ls
 alias ll='ls -lah --color=auto'
@@ -22,12 +25,12 @@ alias l='ls -CF --color=auto'
 alias sll='sudo ls -la'
 
 # exa
-alias e='exa'
-alias et='exa --long --tree'
-alias ee='exa -abghHlS'
-alias eet='exa --long --tree -abghHlS'
-alias see='sudo exa -abghHlS'
-alias stree='sudo exa --long --tree'
+# alias e='exa'
+# alias et='exa --long --tree'
+# alias ee='exa -abghHlS'
+# alias eet='exa --long --tree -abghHlS'
+# alias see='sudo exa -abghHlS'
+# alias stree='sudo exa --long --tree'
 
 # Skeletons
 alias skel='new-skeleton.bash'
@@ -186,6 +189,9 @@ alias cfg-autostart="nvim \$(which autostart.sh)"
 alias cfg-backup="nvim \$(which backup.bash)"
 alias cfg-bashrc="nvim ~/.bashrc && source ~/.bashrc"
 alias cfg-zshrc="nvim ~/.zshrc && source ~/.zshrc"
+alias cfg-hosts="sudo nvim /etc/hosts"
+alias cfg-fstab="sudo nvim /etc/fstab"
+alias cfg-crypttab="sudo nvim /etc/crypttab"
 alias cfg-alias-common="nvim ~/.common_alias.sh && source ~/.bashrc_alias_common"
 alias cfg-alias-custom="nvim ~/.custom_alias.sh && source ~/.bashrc_alias_custom"
 

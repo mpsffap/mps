@@ -1,0 +1,10 @@
+---
+src_etcfiles: "../templates/etc"
+src_dotfiles: "../templates/dotfiles"
+src_grubfiles: "../templates/grub"
+src_iconfiles: "../templates/grub/icons"
+src_themefiles: "../templates/grub/themes"
+src_images: "../templates/images/wallpaper"
+src_snippets: "../templates/snippets"
+src_backup: "/media/disks/1tbssd/backup/backup_ansible"
+src_backup_ssh: "/media/disks/1tbssd/backup/backup_ansible/ssh/*"

@@ -13,41 +13,18 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +1 playbooks/desktop.yml
-badd +5 roles/terminal-nvim/tasks/main.yml
-badd +11 playbooks/terminal.yml
-badd +28 roles/terminal-shells/tasks/bash.yml
-badd +3 inventory/hosts
-badd +24 inventory/group_vars/all/all.yml
-badd +4 inventory/group_vars/all/common.yml
-badd +11 playbooks/all.yml
-badd +6 playbooks/os.yml
-badd +30 roles/terminal-shells/tasks/zsh.yml
-badd +24 roles/terminal-homedir/tasks/main.yml
-badd +6 playbooks/extras.yml
-badd +83 ~/mps/repo/github/mps-nvim/installers/nvim.bash
-badd +51 roles/terminal-nvim/tasks/essentials.yml
-badd +1 roles/terminal-nvim/tasks/config.yml
-badd +1 roles/terminal-nvim/tasks/cargo.yml
-badd +18 roles/terminal-nvim/tasks/nvim.yml
-badd +13 roles/terminal-nvim/tasks/lazygit.yml
-badd +45 roles/desktop-qtile/tasks/config.yml
-badd +10 playbooks/optimize.yml
-badd +63 templates/dotfiles/.config/bashrc/.bashrc
-badd +11 roles/desktop-rofi/tasks/essentials.yml
-badd +36 templates/snippets/autostart.sh
-badd +4 templates/snippets/qtilerun.bash
-badd +7 templates/dotfiles/.config/qtile/qtile.desktop
-badd +24 templates/dotfiles/.config/qtile/groups.py
-badd +17 templates/dotfiles/.config/qtile/layouts.py
-badd +251 templates/dotfiles/.config/kitty/kitty.conf
-badd +1 roles/terminal-shells/tasks/main.yml
-badd +15 roles/terminal-vim/tasks/main.yml
-badd +23 templates/dotfiles/.vimrc
+badd +1 ~/mps/repo/github/odem/unattend-my-iso/Makefile
+badd +1 README.md
+badd +1 ansible.cfg
+badd +12 inventory/group_vars/all/all.yml
+badd +36 ~/mps/repo/github/odem/mps/installer/optimize-cryptboot.bash
+badd +4 roles/optimize-cryptoboot/tasks/main.yml
+badd +20 roles/optimize-cryptoboot/tasks/convertv1.yml
+badd +36 roles/optimize-cryptoboot/tasks/movepart.yml
 argglobal
 %argdel
-$argadd playbooks/desktop.yml
-edit roles/terminal-vim/tasks/main.yml
+$argadd ~/mps/repo/github/odem/unattend-my-iso/Makefile
+edit roles/optimize-cryptoboot/tasks/movepart.yml
 wincmd t
 let s:save_winminheight = &winminheight
 let s:save_winminwidth = &winminwidth
@@ -56,23 +33,23 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 argglobal
-balt roles/terminal-shells/tasks/zsh.yml
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=99
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
+balt roles/optimize-cryptoboot/tasks/convertv1.yml
+setlocal foldmethod=manual
+setlocal foldexpr=0
+setlocal foldmarker={{{,}}}
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldenable
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 17 - ((16 * winheight(0) + 16) / 32)
+let s:l = 36 - ((8 * winheight(0) + 10) / 20)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 17
-normal! 0
+keepjumps 36
+normal! 019|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

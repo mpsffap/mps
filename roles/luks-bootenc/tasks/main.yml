@@ -1,0 +1,6 @@
+- name: Include first stage
+  ansible.builtin.include_tasks: convertv1.yml
+- name: Include second stage
+  ansible.builtin.include_tasks: movepart.yml
+- name: Include third stage
+  ansible.builtin.include_tasks: addkey.yml

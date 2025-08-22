@@ -10,13 +10,13 @@
 
 - name: Copy vim config
   ansible.builtin.copy:
-    src: "{{ mps.src_dotfiles }}/{{ item }}"
+    src: "{{ src_dotfiles }}/{{ item }}"
     dest: "{{ target_user_dir }}/{{ item }}"
     owner: "{{ target_user }}"
     group: "{{ target_user }}"
     mode: "0700"
-  loop: "{{ mps.vim_files }}"
-  when: mps.vim_files is defined
+  loop: "{{ vim_files }}"
+  when: vim_files is defined
 # - name: Exec PlugiVnstall
 #   ansible.builtin.shell:
 #     cmd: 'vim -es -u {{ target_user_dir }}/.vimrc -i NONE -c "PlugInstall" -c "qa"'

@@ -1,15 +1,15 @@
 - name: Copy bash config
   ansible.builtin.copy:
-    src: "{{ mps.src_dotfiles }}/.bashrc"
-    dest: "{{ mps.home_dir }}/"
+    src: "{{ src_dotfiles }}/.bashrc"
+    dest: "{{ target_user_dir }}/"
     owner: "{{ target_user }}"
     group: "{{ target_user }}"
     mode: "0700"
 
 - name: Copy bash config
   ansible.builtin.copy:
-    src: "{{ mps.src_dotfiles }}/.config/bashrc"
-    dest: "{{ mps.home_dir }}/.config"
+    src: "{{ src_dotfiles }}/.config/bashrc"
+    dest: "{{ target_user_dir }}/.config"
     owner: "{{ target_user }}"
     group: "{{ target_user }}"
     mode: "0700"

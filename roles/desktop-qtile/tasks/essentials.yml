@@ -15,8 +15,8 @@
 
 - name: Clone qtile repo
   ansible.builtin.git:
-    repo: "{{ mps.url_qtile }}"
-    dest: "{{ mps.dst_qtile_repo }}"
+    repo: "{{ url_qtile }}"
+    dest: "{{ dst_qtile_repo }}"
     bare: false
     update: false
     clone: true
@@ -28,5 +28,5 @@
     name: qtile
     extra_args: "--break-system-packages --upgrade --ignore-installed"
     state: present
-    chdir: "{{ mps.dst_qtile_repo }}"
+    chdir: "{{ dst_qtile_repo }}"
   become: true

@@ -45,7 +45,7 @@
 #   changed_when: "'MOK successfully generated' in mok_gen.stdout"
 #
 # - name: Import MOK key
-#   ansible.builtin.command: mokutil --import {{ mps.dst_nvidia_mok_key }}
+#   ansible.builtin.command: mokutil --import {{ dst_nvidia_mok_key }}
 #   register: mok_import
 #   changed_when: "'is enrolled' not in mok_import.stdout"
 #

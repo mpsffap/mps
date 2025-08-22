@@ -1,0 +1,25 @@
+---
+# -- Desktop
+dsk_essentials:
+  - ".gtkrc-2.0"
+  - ".config/Thunar"
+  - ".config/xfce4"
+  - ".config/gtk-2.0"
+  - ".config/gtk-3.0"
+dsk_snippets:
+  - "autostart.sh"
+  - "autostart_clean.sh"
+dsk_default_config:
+  - .config/dconf
+  - .config/dunst
+  - .config/gedit
+  - .config/picom.conf
+
+# -- Rofi
+rofi_snippets:
+  - "rofi-boot-dwmswitch.sh"
+  - "rofi-boot-launcher.sh"
+  - "rofi-boot-powermenu.sh"
+
+# -- Lightdm
+lightdm_wallpaper: "wormhole.jpg"

@@ -1,19 +1,19 @@
 ---
 - name: Create directory for Rustup installation
   ansible.builtin.file:
-    path: "{{ mps.dst_tools }}/rustup"
+    path: "{{ dst_tools }}/rustup"
     state: directory
     mode: "0755"
 
 - name: Download rustup installation script
   ansible.builtin.get_url:
-    url: "{{ mps.url_rustup }}"
-    dest: "{{ mps.dst_rustup_sh }}"
+    url: "{{ url_rustup }}"
+    dest: "{{ dst_rustup_sh }}"
     mode: "0755"
 
 - name: Run rustup installation script
   ansible.builtin.shell:
-    cmd: "{{ mps.dst_rustup_sh }} -y"
+    cmd: "{{ dst_rustup_sh }} -y"
     creates: "{{ target_user_dir }}/.cargo/env"
   become: true
   become_user: "{{ target_user }}"
@@ -35,6 +35,7 @@
 
 - name: Install Cargo tools
   ansible.builtin.shell:
+    # cmd: "cargo install fd-find tree-sitter-cli yazi-fm yazi-cli"
     cmd: "cargo install fd-find tree-sitter-cli"
   environment:
     CARGO_HOME: "{{ target_user_dir }}/.cargo"

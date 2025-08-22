@@ -1,7 +1,7 @@
 ---
 - name: Set timezone
   community.general.timezone:
-    name: "{{ mps.timezone }}"
+    name: "{{ default_timezone }}"
 
 - name: Essentials Timezone
   ansible.builtin.apt:

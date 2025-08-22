@@ -1,7 +1,7 @@
 ---
 - name: Create rofi folder
   ansible.builtin.file:
-    path: "{{ mps.dst_images }}/"
+    path: "{{ dst_images }}/"
     state: "directory"
     owner: "root"
     group: "root"
@@ -9,8 +9,8 @@
 
 - name: Copy grub themes
   ansible.builtin.copy:
-    src: "{{ mps.src_images }}/wormhole.jpg"
-    dest: "{{ mps.dst_images }}/"
+    src: "{{ src_images }}/wormhole.jpg"
+    dest: "{{ dst_images }}/"
     owner: "root"
     group: "root"
     mode: "0755"
@@ -19,5 +19,5 @@
   ansible.builtin.lineinfile:
     path: "/etc/lightdm/lightdm-gtk-greeter.conf"
     regexp: "^background="
-    line: "background={{ mps.dst_images }}/wormhole.jpg"
+    line: "background={{ dst_images }}/wormhole.jpg"
     state: present

@@ -15,7 +15,7 @@
 
 - name: Copy config file
   ansible.builtin.copy:
-    src: "{{ mps.src_etcfiles }}/kmscon/kmscon.conf"
+    src: "{{ src_etcfiles }}/kmscon/kmscon.conf"
     dest: "/etc/kmscon"
     owner: "root"
     group: "root"

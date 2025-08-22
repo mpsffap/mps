@@ -1,28 +1,28 @@
 ---
 - name: Copy Config
   ansible.builtin.copy:
-    src: "{{ mps.src_dotfiles }}/{{ item }}"
+    src: "{{ src_dotfiles }}/{{ item }}"
     dest: "{{ target_user_dir }}/{{ item }}"
     owner: "{{ target_user }}"
     group: "{{ target_user }}"
     mode: "0700"
-  loop: "{{ mps.dsk_essentials }}"
-  when: mps.dsk_essentials is defined
+  loop: "{{ dsk_essentials }}"
+  when: dsk_essentials is defined
 
 - name: Copy Snippets
   ansible.builtin.copy:
-    src: "{{ mps.src_snippets }}/{{ item }}"
+    src: "{{ src_snippets }}/{{ item }}"
     dest: "{{ target_user_dir }}/mps/snippets/{{ item }}"
     owner: "{{ target_user }}"
     group: "{{ target_user }}"
     mode: "0700"
-  loop: "{{ mps.dsk_snippets }}"
-  when: mps.dsk_snippets is defined
+  loop: "{{ dsk_snippets }}"
+  when: dsk_snippets is defined
 
 - name: Copy Images
   ansible.builtin.copy:
-    src: "{{ mps.src_images }}"
-    dest: "{{ mps.dst_images }}"
+    src: "{{ src_images }}"
+    dest: "{{ dst_images }}"
     owner: "root"
     group: "root"
     mode: "0755"

@@ -5,6 +5,7 @@ M.getplugins = function()
 		require("mps-core.treesitter.treesitter-repo"),
 		require("mps-core.neoconf.neoconf-repo"),
 		require("mps-core.oil.oil-repo"),
+		require("mps-core.yazi.yazi-repo"),
 		require("mps-core.lspconfig.lspconfig-repo"),
 		require("mps-core.lspsaga.lspsaga-repo"),
 		require("mps-core.telescope.telescope-repo"),
@@ -25,6 +26,7 @@ M.configure = function()
 	require("mps-core.treesitter.treesitter-config")
 	require("mps-core.neoconf.neoconf-config")
 	require("mps-core.oil.oil-config")
+	require("mps-core.yazi.yazi-config")
 	require("mps-core.lspconfig.lspconfig-config")
 	require("mps-core.lspsaga.lspsaga-config")
 	require("mps-core.telescope.telescope-config")
@@ -37,6 +39,7 @@ M.configure = function()
 
 	-- Keymaps
 	require("mps-core.keymaps")
+	require("mps-core.yazi.yazi-keymaps")
 	require("mps-core.telescope.telescope-keymaps")
 	require("mps-core.nerdtree.nerdtree-keymaps")
 	-- require("mps-core.nvim-tree.nvim-tree-keymaps")

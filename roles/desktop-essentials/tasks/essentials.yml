@@ -25,6 +25,8 @@
       - thunar-font-manager
       - thunarx-python
       - ssh-askpass
+      - plymouth
+      - plymouth-themes
     state: present
   become: true
 

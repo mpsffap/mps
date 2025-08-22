@@ -1,6 +1,6 @@
 - name: Ensure font directory exists
   ansible.builtin.file:
-    path: "{{ mps.dst_fontdir }}"
+    path: "{{ dst_fontdir }}"
     state: directory
     mode: "0755"
 
@@ -9,7 +9,7 @@
     - name: Download font zip or font file
       ansible.builtin.get_url:
         url: "{{ item.url }}"
-        dest: "{{ mps.dst_fontdir }}/{{ item.name }}.zip"
+        dest: "{{ dst_fontdir }}/{{ item.name }}.zip"
         owner: "{{ target_user }}"
         group: "{{ target_user }}"
         mode: "0755"
@@ -24,7 +24,7 @@
 
     - name: Unzip font if necessary
       ansible.builtin.unarchive:
-        src: "{{ mps.dst_fontdir }}/{{ item.name }}.zip"
+        src: "{{ dst_fontdir }}/{{ item.name }}.zip"
         dest: "{{ item.dst_unzip_path }}"
         owner: "{{ target_user }}"
         group: "{{ target_user }}"
@@ -35,7 +35,7 @@
 
     - name: Copy font if necessary
       ansible.builtin.copy:
-        src: "{{ mps.dst_fontdir }}/{{ item.name }}.zip"
+        src: "{{ dst_fontdir }}/{{ item.name }}.zip"
         dest: "{{ item.dst_unzip_path }}/{{ item.name }}.ttf"
         owner: "{{ target_user }}"
         group: "{{ target_user }}"
@@ -46,7 +46,7 @@
 
     - name: Cleanup after unzipping (optional)
       ansible.builtin.file:
-        path: "{{ mps.dst_fontdir }}/{{ item.name }}.zip"
+        path: "{{ dst_fontdir }}/{{ item.name }}.zip"
         state: absent
       when: item.cleanup is defined
       loop: "{{ fonts }}"

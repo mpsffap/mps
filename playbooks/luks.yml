@@ -1,0 +1,6 @@
+---
+- name: Setup encrypted boot partition
+  hosts: hive
+  become: true
+  roles:
+    - luks-bootenc

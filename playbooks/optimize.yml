@@ -4,7 +4,7 @@
   become: true
   roles:
     - optimize-grubmenu
-    - optimize-lightdm
+    # - optimize-lightdm
     # - optimize-ramdisks
     # - optimize-zram
     # - optimize-tty

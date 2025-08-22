@@ -1,14 +1,14 @@
 ---
 - name: Add Unity Technologies GPG key
   ansible.builtin.shell: |
-    wget -qO - {{ mps.url_unity_key }} \
+    wget -qO - {{ url_unity_key }} \
     | gpg --dearmor \
-    | sudo tee {{ mps.dst_unity_key }} > /dev/null
+    | sudo tee {{ dst_unity_key }} > /dev/null
   become: true
 
 - name: Add unityhub repository
   ansible.builtin.apt_repository:
-    repo: "deb [signed-by={{ mps.dst_unity_key }}] {{ mps.url_unity_repo }} stable main"
+    repo: "deb [signed-by={{ dst_unity_key }}] {{ url_unity_repo }} stable main"
 
 - name: Install essentials unity
   ansible.builtin.apt:
@@ -19,5 +19,5 @@
 
 - name: Install vscode
   ansible.builtin.apt:
-    deb: "{{ mps.url_deb_vscode }}"
+    deb: "{{ url_deb_vscode }}"
     state: present

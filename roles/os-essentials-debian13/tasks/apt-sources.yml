@@ -13,7 +13,7 @@
 
 - name: Copy apt sources
   ansible.builtin.template:
-    src: "{{ mps.src_etcfiles }}/apt/sources.list"
+    src: "{{ src_etcfiles }}/apt/sources.list"
     dest: "/etc/apt/sources.list"
     owner: "root"
     group: "root"

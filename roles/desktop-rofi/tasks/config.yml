@@ -1,13 +1,13 @@
 ---
 - name: Copy rofi snippets
   ansible.builtin.copy:
-    src: "{{ mps.src_snippets }}/{{ item }}"
-    dest: "{{ mps.dst_snippets }}"
+    src: "{{ src_snippets }}/{{ item }}"
+    dest: "{{ dst_snippets }}"
     owner: "{{ target_user }}"
     group: "{{ target_user }}"
     mode: "0700"
-  loop: "{{ mps.rofi_snippets }}"
-  when: mps.rofi_snippets is defined
+  loop: "{{ rofi_snippets }}"
+  when: rofi_snippets is defined
 
 - name: Create rofi folder
   ansible.builtin.file:
@@ -19,7 +19,7 @@
 
 - name: Copy rofi config
   ansible.builtin.copy:
-    src: "{{ mps.src_dotfiles }}/.config/rofi/config.rasi"
+    src: "{{ src_dotfiles }}/.config/rofi/config.rasi"
     dest: "{{ target_user_dir }}/.config/rofi/config.rasi"
     owner: "{{ target_user }}"
     group: "{{ target_user }}"
@@ -27,7 +27,7 @@
 
 - name: Copy rofi themes
   ansible.builtin.copy:
-    src: "{{ mps.src_dotfiles }}/.config/rofi/themes"
+    src: "{{ src_dotfiles }}/.config/rofi/themes"
     dest: "{{ target_user_dir }}/.config/rofi"
     owner: "{{ target_user }}"
     group: "{{ target_user }}"

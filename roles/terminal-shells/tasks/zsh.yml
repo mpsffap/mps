@@ -6,7 +6,7 @@
 
 - name: Download ohmyzsh
   ansible.builtin.get_url:
-    url: "{{ mps.url_ohmyzsh }}"
+    url: "{{ url_ohmyzsh }}"
     dest: "{{ target_user_dir }}/ohmyzsh.sh"
     owner: "{{ target_user }}"
     group: "{{ target_user }}"
@@ -42,13 +42,13 @@
 
 - name: Copy zsh config
   ansible.builtin.copy:
-    src: "{{ mps.src_dotfiles }}/{{ item }}"
+    src: "{{ src_dotfiles }}/{{ item }}"
     dest: "{{ target_user_dir }}/{{ item }}"
     owner: "{{ target_user }}"
     group: "{{ target_user }}"
     mode: "0700"
-  loop: "{{ mps.zsh_files }}"
-  when: mps.zsh_files is defined
+  loop: "{{ zsh_files }}"
+  when: zsh_files is defined
 
 - name: Delete zsh config
   ansible.builtin.file:
@@ -64,5 +64,5 @@
     clone: true
     single_branch: true
     version: "master"
-  loop: "{{ mps.zsh_plugins | dict2items }}"
-  when: mps.zsh_plugins is defined
+  loop: "{{ zsh_plugins | dict2items }}"
+  when: zsh_plugins is defined

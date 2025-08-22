@@ -1,0 +1,7 @@
+---
+- name: Setup mps users
+  hosts: hive
+  become: true
+  roles:
+    - users-bootstrap
+    # - users-secrets

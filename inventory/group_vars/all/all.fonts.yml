@@ -1,0 +1,24 @@
+---
+# MPS
+fonts:
+  # - name: Awesome
+  #   url_awesome: https://use.fontawesome.com/releases/v6.2.1/fontawesome-free-6.2.1-desktop.zip
+  #   dst_unzip_path: "{{ dst_fontdir }}/Awesome"
+  #   post_copy:
+  #     - src: "{{ dst_fontdir }}/Awesome/fontawesome-free-6.2.1-desktop/otfs/*.otf"
+  #       dest: "{{ dst_fontdir }}/Awesome/"
+  #       cleanup:
+  #         - "{{ dst_fontdir }}/Awesome/fontawesome-free-6.2.1-desktop"
+
+  # - name: Monoid
+  #   url: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/Monoid.zip
+  #   dst_unzip_path: "{{ dst_fontdir }}/Monoid"
+
+  - name: JetBrainsMono
+    url: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/JetBrainsMono.zip
+    dst_unzip_path: "{{ dst_fontdir }}/JetBrainsMono"
+
+  - name: codicon
+    url: https://github.com/microsoft/vscode-codicons/releases/download/0.0.36/codicon.ttf
+    dst_unzip_path: "{{ dst_fontdir }}/codicon"
+    file_only: true

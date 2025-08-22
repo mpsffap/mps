@@ -92,6 +92,13 @@
       - ssh
       - nmap
       - dnsutils
+      - isc-dhcp-client
+    state: present
+  become: true
+
+- name: Essentials Stats
+  ansible.builtin.apt:
+    name:
       - iftop
       - sysstat
     state: present

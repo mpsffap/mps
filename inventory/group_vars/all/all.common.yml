@@ -1,0 +1,7 @@
+---
+# Global
+target_user: "mps"
+target_user_dir: "/home/mps"
+
+# Version
+mps_version: "0.0.1"

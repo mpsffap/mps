@@ -1,0 +1,21 @@
+---
+# -- URL
+url_qtile: "https://github.com/qtile/qtile"
+url_ohmyzsh: "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+url_mpsnvim: "https://github.com/odem/mps-nvim.git"
+url_dotnet: "https://dot.net/v1/dotnet-install.sh"
+url_spotify_key: "https://download.spotify.com/debian/pubkey_C85668DF69375001.gpg"
+url_spotify_repo: "http://repository.spotify.com"
+url_dotnet_installer: "https://dot.net/v1/dotnet-install.sh"
+url_unity_key: "https://hub.unity3d.com/linux/keys/public"
+url_unity_repo: "https://hub.unity3d.com/linux/repos/deb"
+url_deb_vscode: "https://go.microsoft.com/fwlink/?LinkID=760868"
+url_lutris_repo: "https://download.opensuse.org/repositories/home:/strycore/Debian_12/"
+url_lutris_sources: "/etc/apt/sources.list.d/lutris.list"
+url_lutris_key_url: "https://download.opensuse.org/repositories/home:/strycore/Debian_12/Release.key"
+url_lutris_key_path: "/etc/apt/keyrings/lutris.gpg"
+url_dxvk_repo: "https://github.com/doitsujin/dxvk.git"
+url_docker_gpg: https://download.docker.com/linux/debian/gpg
+url_docker_repo: https://download.docker.com/linux/debian
+url_rustup: "https://sh.rustup.rs"
+url_neovim: "https://github.com/neovim/neovim/releases/download/v0.11.3/nvim-linux-x86_64.tar.gz"

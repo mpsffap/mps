@@ -1,6 +1,6 @@
 - name: Copy nvim config
   ansible.builtin.copy:
-    src: "{{ mps.src_dotfiles }}/.config/nvim"
+    src: "{{ src_dotfiles }}/.config/nvim"
     dest: "{{ target_user_dir }}/.config"
     owner: "{{ target_user }}"
     group: "{{ target_user }}"

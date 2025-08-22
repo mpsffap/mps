@@ -9,7 +9,7 @@
 
 - name: Copy xsession file
   ansible.builtin.copy:
-    src: "{{ mps.src_dotfiles }}/.config/qtile/qtile.desktop"
+    src: "{{ src_dotfiles }}/.config/qtile/qtile.desktop"
     dest: "/usr/share/xsessions/qtile.desktop"
     owner: "root"
     group: "root"
@@ -17,7 +17,7 @@
 
 - name: Create runner
   ansible.builtin.copy:
-    src: "{{ mps.src_snippets }}/qtilerun.bash"
+    src: "{{ src_snippets }}/qtilerun.bash"
     dest: "/usr/local/bin/qtilerun.bash"
     owner: "root"
     group: "root"
@@ -30,7 +30,7 @@
 
 - name: Copy qtile config
   ansible.builtin.copy:
-    src: "{{ mps.src_dotfiles }}/.config/qtile"
+    src: "{{ src_dotfiles }}/.config/qtile"
     dest: "{{ target_user_dir }}/.config/"
     owner: "{{ target_user }}"
     group: "{{ target_user }}"
@@ -38,7 +38,7 @@
 
 - name: Copy picom config
   ansible.builtin.copy:
-    src: "{{ mps.src_dotfiles }}/.config/picom.conf"
+    src: "{{ src_dotfiles }}/.config/picom.conf"
     dest: "{{ target_user_dir }}/.config/"
     owner: "{{ target_user }}"
     group: "{{ target_user }}"
@@ -46,10 +46,10 @@
 
 - name: Copy desktop config files
   ansible.builtin.copy:
-    src: "{{ mps.src_dotfiles }}/{{ item }}"
+    src: "{{ src_dotfiles }}/{{ item }}"
     dest: "{{ target_user_dir }}/{{ item }}"
     owner: "{{ target_user }}"
     group: "{{ target_user }}"
     mode: "0700"
-  loop: "{{ mps.dsk_default_config }}"
-  when: mps.dsk_default_config is defined
+  loop: "{{ dsk_default_config }}"
+  when: dsk_default_config is defined
