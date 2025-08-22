@@ -1,7 +1,7 @@
 ---
 # Global
-target_user: "mps"
-target_user_dir: "/home/mps"
+target_user: "jb"
+target_user_dir: "/home/jb"
 
 # Version
 mps_version: "0.0.1"

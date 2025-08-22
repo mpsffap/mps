@@ -38,7 +38,7 @@
               # One-time LUKS conversion script for initramfs
 
               LUKS_PART="{{ luks_part }}"
-              LUKS_PASS="{{ luks_pass }}"
+              LUKS_PASS="{{ host_config.luks_pass }}"
 
               if [ -f /run/luks_convert_done ]; then
                 echo "LUKS conversion already done, skipping."

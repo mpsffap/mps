@@ -1,4 +1,3 @@
 ---
 # Crypto
 luks_part: "/dev/vda3"
-luks_pass: "diskpass"

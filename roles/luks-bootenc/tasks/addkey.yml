@@ -40,8 +40,8 @@
         - name: Add keyfile to LUKS partition
           become: true
           shell: |
-            printf '%s\n' "{{ luks_pass }}" | cryptsetup luksAddKey {{ luks_part }} /keyfile
-          no_log: true
+            printf '%s\n' "{{ host_config.luks_pass }}" | cryptsetup luksAddKey {{ luks_part }} /keyfile
+          #no_log: true
 
         - name: Show LUKS header info
           command: cryptsetup luksDump {{ luks_part }}

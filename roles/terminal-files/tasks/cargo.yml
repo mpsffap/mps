@@ -35,7 +35,7 @@
 - name: Install Cargo tools only if not already installed
   ansible.builtin.shell: |
     source {{ target_user_dir }}/.cargo/env
-    cargo install fd-find tree-sitter-cli
+    cargo install fd-find yazi-fm yazi-cli
   args:
     executable: /bin/bash
   environment:
