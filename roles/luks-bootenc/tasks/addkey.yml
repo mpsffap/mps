@@ -41,7 +41,7 @@
           become: true
           shell: |
             printf '%s\n' "{{ host_config.luks_pass }}" | cryptsetup luksAddKey {{ luks_part }} /keyfile
-          #no_log: true
+          no_log: true
 
         - name: Show LUKS header info
           command: cryptsetup luksDump {{ luks_part }}
