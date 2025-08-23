@@ -4,6 +4,7 @@
       - fd-find
       - fzf
       - bat
+      - eza
       - tree
       - ranger
       - ncdu

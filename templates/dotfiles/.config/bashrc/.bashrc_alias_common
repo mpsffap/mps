@@ -4,6 +4,9 @@
 
 MPSDIR="/opt/mps"
 
+# source bash
+alias sb='source ~/.bashrc'
+
 # apt
 alias pq='apt search'
 alias pi='sudo apt install'
@@ -15,7 +18,7 @@ alias cmmi='./configure && make && sudo make install'
 alias zz='z -'
 alias zq='zoxide query'
 
-# zoxide
+# yazi
 alias y='yazi'
 
 # ls
@@ -25,12 +28,12 @@ alias l='ls -CF --color=auto'
 alias sll='sudo ls -la'
 
 # exa
-# alias e='exa'
-# alias et='exa --long --tree'
-# alias ee='exa -abghHlS'
-# alias eet='exa --long --tree -abghHlS'
-# alias see='sudo exa -abghHlS'
-# alias stree='sudo exa --long --tree'
+alias e='exa --icons=always'
+alias et='exa --long --tree --icons=always'
+alias ee='exa -abghHlS --icons=always'
+alias eet='exa --long --tree -abghHlS --icons=always'
+alias see='sudo exa -abghHlS --icons=always'
+alias stree='sudo exa --long --tree --icons=always'
 
 # Skeletons
 alias skel='new-skeleton.bash'
@@ -77,6 +80,7 @@ alias gstash='git stash save wip'
 alias gstashpop='bucket=$(git stash list | grep wip | awk "{print $1}" | cut -f 1 -d ":") ; [ ! -z "$bucket" ] && git stash pop "$bucket" || echo "NO"'
 alias gpull='git pull'
 alias gpush='git push'
+
 # Docker
 alias dps="docker ps -a"
 alias dcexec="docker exec -ti "
@@ -91,7 +95,7 @@ alias diatagged='docker images -a | grep -v "<none>"'
 
 # network
 alias ns='sudo netstat -tulpn |sort -k 4 -n'
-alias nso='sudo netstat -tulpano |sort -k 4 -n'
+alias nsao='sudo netstat -tulpano |sort -k 4 -n'
 alias info-net='sudo netstat -tulpano |sort -k 4 -n'
 
 # iptables
@@ -192,8 +196,8 @@ alias cfg-zshrc="nvim ~/.zshrc && source ~/.zshrc"
 alias cfg-hosts="sudo nvim /etc/hosts"
 alias cfg-fstab="sudo nvim /etc/fstab"
 alias cfg-crypttab="sudo nvim /etc/crypttab"
-alias cfg-alias-common="nvim ~/.common_alias.sh && source ~/.bashrc_alias_common"
-alias cfg-alias-custom="nvim ~/.custom_alias.sh && source ~/.bashrc_alias_custom"
+alias cfg-alias-common="nvim ~/.config/.bashrc_alias_common.sh && source ~/.config/.bashrc_alias_common.sh"
+alias cfg-alias-custom="nvim ~/.config/.bashrc_alias_custom.sh && source ~/.config/.bashrc_alias_custom.sh"
 
 # Custom folders aliases
 alias mpsrepo="z $MPSDIR"
