@@ -2,6 +2,8 @@
 - name: Copy user settings
   block:
     - name: Create ssh folder
+      become: true
+      become_user: "{{ target_user }}"
       ansible.builtin.file:
         path: "{{ target_user_dir }}/.ssh/"
         state: directory
@@ -10,6 +12,8 @@
         mode: "0700"
 
     - name: Copy all files from local folder
+      become: true
+      become_user: "{{ target_user }}"
       ansible.builtin.copy:
         src: "{{ item }}"
         dest: "{{ target_user_dir }}/.ssh"
