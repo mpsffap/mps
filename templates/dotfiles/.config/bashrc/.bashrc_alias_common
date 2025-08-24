@@ -81,6 +81,11 @@ alias gstashpop='bucket=$(git stash list | grep wip | awk "{print $1}" | cut -f 
 alias gpull='git pull'
 alias gpush='git push'
 
+# Ansible
+alias ave='ansible-vault edit --vault-pass-file vault/vault_pass.txt'
+alias avc='ansible-vault create --vault-pass-file vault/vault_pass.txt'
+alias apb='ansible-playbook --become --vault-pass-file vault/vault_pass.txt -i inventory/hosts'
+
 # Docker
 alias dps="docker ps -a"
 alias dcexec="docker exec -ti "
@@ -196,8 +201,8 @@ alias cfg-zshrc="nvim ~/.zshrc && source ~/.zshrc"
 alias cfg-hosts="sudo nvim /etc/hosts"
 alias cfg-fstab="sudo nvim /etc/fstab"
 alias cfg-crypttab="sudo nvim /etc/crypttab"
-alias cfg-alias-common="nvim ~/.config/.bashrc_alias_common.sh && source ~/.config/.bashrc_alias_common.sh"
-alias cfg-alias-custom="nvim ~/.config/.bashrc_alias_custom.sh && source ~/.config/.bashrc_alias_custom.sh"
+alias cfg-alias-common="nvim ~/.config/bashrc/.bashrc_alias_common && source ~/.config/bashrc/.bashrc_alias_common"
+alias cfg-alias-custom="nvim ~/.config/bashrc/.bashrc_alias_custom && source ~/.config/bashrc/.bashrc_alias_custom"
 
 # Custom folders aliases
 alias mpsrepo="z $MPSDIR"

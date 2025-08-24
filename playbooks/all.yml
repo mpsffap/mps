@@ -7,9 +7,9 @@
   ansible.builtin.import_playbook: terminal.yml
 - name: Include desktop playbook
   ansible.builtin.import_playbook: desktop.yml
-# - name: Include extras playbook
-#   ansible.builtin.import_playbook: extras.yml
+- name: Include extras playbook
+  ansible.builtin.import_playbook: extras.yml
 - name: Include optimize playbook
   ansible.builtin.import_playbook: optimize.yml
-- name: Include luks playbook
-  ansible.builtin.import_playbook: luks.yml
+# - name: Include luks playbook
+#   ansible.builtin.import_playbook: luks.yml

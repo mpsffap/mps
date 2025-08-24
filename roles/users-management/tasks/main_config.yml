@@ -1,0 +1,15 @@
+- name: Handle delete users
+  include_tasks: handle_delete.yml
+  loop: "{{ absent_users }}"
+  loop_control:
+    loop_var: user
+  when: target_user == "all"
+  no_log: true
+
+- name: Handle add users
+  include_tasks: handle_add.yml
+  loop: "{{ present_users }}"
+  loop_control:
+    loop_var: user
+  when: target_user == "all"
+  no_log: true

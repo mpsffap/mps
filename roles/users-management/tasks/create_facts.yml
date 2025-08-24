@@ -1,0 +1,55 @@
+---
+- name: Filter users to process
+  set_fact:
+    filtered_users: >-
+      {{
+        users
+        if target_user == 'all'
+        else users | selectattr('accname', 'equalto', target_user) | list
+      }}
+  # no_log: true
+
+- name: Filter users to be present
+  set_fact:
+    present_users: >-
+      {{
+        filtered_users
+        | selectattr('state', 'defined')
+        | selectattr('state', 'equalto', 'present')
+        | list
+        if state == 'present'
+        else []
+      }}
+  no_log: true
+
+- name: Filter users to be absent
+  set_fact:
+    absent_users: >-
+      {{
+        filtered_users
+        | selectattr('state', 'defined')
+        | selectattr('state', 'equalto', 'absent')
+        | list
+        if state == 'present'
+        else filtered_users
+      }}
+  no_log: true
+
+- name: Set config user list for this host
+  set_fact:
+    host_users: "{{ config_hosts.hosts[inventory_hostname].users }}"
+
+- name: Debug host users
+  debug:
+    msg: "Host users: {{ host_users }}"
+
+- name: Debug user states
+  debug:
+    msg: "Target User: {{ target_user }}"
+
+- name: Debug user states
+  debug:
+    msg: "{{ item.accname }} will be {{ item.state | default(state) }}"
+  loop: "{{ filtered_users }}"
+  loop_control:
+    label: " {{ item.accname }}"

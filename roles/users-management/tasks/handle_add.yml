@@ -1,0 +1,16 @@
+---
+- name: Set target user to {{ hostuser }}
+  set_fact:
+    target_user: "{{ hostuser }}"
+  when: hostuser != ""
+- name: Create Facts
+  import_tasks: create_facts.yml
+
+- name: Handle present users
+  include_tasks: users_add.yml
+
+- name: Handle present sudo users
+  include_tasks: sudo_nopasswd_add.yml
+
+- name: Handle present ssh keys
+  include_tasks: keys.yml
