@@ -87,15 +87,21 @@
       check_mode: false
       register: prelim_mount_output
 
-    - name: PRELIM | AUDIT | Section 1.1 | Retrieve mount options - build fact # This is inherited and used in mountpoints tasks
+    - name: PRELIM | AUDIT | Section 1.1 | Retrieve mount options - build fact
       ansible.builtin.set_fact:
         prelim_mount_point_fs_and_options: >-
-          {%- set prelim_mount_point_fs_and_options = {} -%}
+          {%- set mountpoints = {} -%}
           {%- for line in prelim_mount_output.stdout_lines -%}
-          {%- set fields = line.split() -%}
-          {%- set _ = prelim_mount_point_fs_and_options.update({fields[1]: {'src': fields[0], 'fs_type': fields[2], 'original_options': fields[3][1:-1].split(','), 'options': fields[3][1:-1].split(',')}}) -%}
+            {%- set fields = line.split() -%}
+            {%- set item = { (fields[1]): {
+              'src': fields[0],
+              'fs_type': fields[2],
+              'original_options': fields[3][1:-1].split(','),
+              'options': fields[3][1:-1].split(',')
+            }} -%}
+            {%- set mountpoints = mountpoints | combine(item) -%}
           {%- endfor -%}
-          {{ prelim_mount_point_fs_and_options }}
+          {{ mountpoints }}
 
     - name: "PRELIM | AUDIT | Debug of mount variables to assist in troubleshooting"
       when: deb12cis_debug_mount_data
