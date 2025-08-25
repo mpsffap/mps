@@ -1,4 +1,0 @@
-[hive]
-#hivehome ansible_user=deploy ansible_port=22
-hivevm ansible_user=deploy ansible_port=2224
-

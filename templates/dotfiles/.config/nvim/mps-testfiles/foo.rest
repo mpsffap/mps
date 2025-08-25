@@ -1,2 +1,0 @@
-http://localhost:9200
-GET /_cat/nodes?v|

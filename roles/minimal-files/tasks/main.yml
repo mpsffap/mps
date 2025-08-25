@@ -1,3 +1,0 @@
----
-- name: Include essential apt packages
-  ansible.builtin.include_tasks: essentials.yml

@@ -1,3 +1,0 @@
----
-- name: Include log ramdisk
-  ansible.builtin.include_tasks: ramdisk-log.yml

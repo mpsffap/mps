@@ -1,2 +1,0 @@
-return { "gbprod/yanky.nvim" }
-
