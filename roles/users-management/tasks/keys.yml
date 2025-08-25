@@ -1,7 +1,6 @@
 ---
 - name: Ensure .ssh directory exists for user '{{ user.accname }}'
-  become: true
-  become_user: "{{ user.accname }}"
+
   ansible.builtin.file:
     path: "{{ user.homedir }}/.ssh/"
     state: directory

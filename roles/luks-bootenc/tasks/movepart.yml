@@ -2,7 +2,7 @@
 - name: Get LUKS version of the device
   become: true
   ansible.builtin.shell: |
-    cryptsetup luksDump {{ luks_part }} \
+    cryptsetup luksDump {{ host_config.luks_part }} \
     | grep '^Version:' \
     | tr -d '\t ' \
     | cut -d ':' -f 2
@@ -92,7 +92,7 @@
         state: unmounted
 
     - name: Install grub to disk partition
-      ansible.builtin.command: grub-install "{{ luks_part }}"
+      ansible.builtin.command: grub-install "{{ host_config.luks_part }}"
 
     - name: Update grub configuration
       command: update-grub

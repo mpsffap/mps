@@ -1,37 +1,17 @@
-# Create directories under ~/mps
-- name: Create mps folders
-  ansible.builtin.file:
-    path: "{{ target_user_dir }}/mps/{{ item }}"
-    state: directory
-    owner: "{{ target_user }}"
-    group: "{{ target_user }}"
-    mode: "0700"
-  loop: "{{ mps_folders }}"
+---
+- name: Get list of identity names for this host
+  ansible.builtin.set_fact:
+    host_config: >-
+      {{
+        config_hosts.hosts[inventory_hostname]
+        if inventory_hostname in config_hosts.hosts
+        else config_defaults.hosts[inventory_hostname]
+      }}
 
-- name: Copy git config
-  ansible.builtin.copy:
-    src: "{{ src_dotfiles }}/{{ item }}"
-    dest: "{{ target_user_dir }}/{{ item }}"
-    owner: "{{ target_user }}"
-    group: "{{ target_user }}"
-    mode: "0700"
-  loop: "{{ git_config }}"
-  when: git_config is defined
-
-- name: Copy other config files
-  ansible.builtin.copy:
-    src: "{{ src_dotfiles }}/.config/{{ item }}"
-    dest: "{{ target_user_dir }}/.config/"
-    owner: "{{ target_user }}"
-    group: "{{ target_user }}"
-    mode: "0700"
-  loop: "{{ other_dotfiles }}"
-  when: other_dotfiles is defined
-
-- name: Copy snippets
-  ansible.builtin.copy:
-    src: "{{ src_snippets }}"
-    dest: "{{ target_user_dir }}/mps/"
-    owner: "{{ target_user }}"
-    group: "{{ target_user }}"
-    mode: "0700"
+- name: Handle config users
+  include_tasks: homedir.yml
+  loop: "{{ host_config.users }}"
+  loop_control:
+    loop_var: hostuser
+  when: target_user == "all"
+  no_log: "{{ respect_nolog }}"

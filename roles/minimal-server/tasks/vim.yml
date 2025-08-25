@@ -8,12 +8,17 @@
       - lua5.3
       - vim-nox
 
-- name: Copy vim config
-  ansible.builtin.copy:
-    src: "{{ src_dotfiles }}/{{ item }}"
-    dest: "{{ target_user_dir }}/{{ item }}"
-    owner: "{{ target_user }}"
-    group: "{{ target_user }}"
-    mode: "0700"
-  loop: "{{ vim_files }}"
-  when: vim_files is defined
+- name: User configs to deploy
+  debug:
+    msg: "{{ item.name }} will be {{ item.config_terminal }}"
+  loop: "{{ users }}"
+  loop_control:
+    label: " {{ item.accname }}"
+
+- name: Handle config users
+  include_tasks: vim_config.yml
+  loop: "{{ host_config.users }}"
+  loop_control:
+    loop_var: hostuser
+  when: target_user == "all"
+  no_log: "{{ respect_nolog }}"

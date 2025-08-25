@@ -10,8 +10,8 @@
       ansible.builtin.get_url:
         url: "{{ item.url }}"
         dest: "{{ dst_fontdir }}/{{ item.name }}.zip"
-        owner: "{{ target_user }}"
-        group: "{{ target_user }}"
+        owner: "root"
+        group: "root"
         mode: "0755"
       loop: "{{ fonts }}"
 
@@ -26,8 +26,8 @@
       ansible.builtin.unarchive:
         src: "{{ dst_fontdir }}/{{ item.name }}.zip"
         dest: "{{ item.dst_unzip_path }}"
-        owner: "{{ target_user }}"
-        group: "{{ target_user }}"
+        owner: "root"
+        group: "root"
         mode: "0755"
         remote_src: true
       loop: "{{ fonts }}"
@@ -37,8 +37,8 @@
       ansible.builtin.copy:
         src: "{{ dst_fontdir }}/{{ item.name }}.zip"
         dest: "{{ item.dst_unzip_path }}/{{ item.name }}.ttf"
-        owner: "{{ target_user }}"
-        group: "{{ target_user }}"
+        owner: "root"
+        group: "root"
         mode: "0755"
         remote_src: true
       loop: "{{ fonts }}"

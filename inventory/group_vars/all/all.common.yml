@@ -5,3 +5,6 @@ target_user_dir: "/home/jb"
 
 # Version
 mps_version: "0.0.1"
+
+# Logging
+respect_nolog: true

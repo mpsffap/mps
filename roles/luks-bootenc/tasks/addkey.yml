@@ -2,7 +2,7 @@
 - name: Get LUKS version of the device
   become: true
   ansible.builtin.shell: |
-    cryptsetup luksDump {{ luks_part }} \
+    cryptsetup luksDump {{ host_config.luks_part }} \
     | grep '^Version:' \
     | tr -d '\t ' \
     | cut -d ':' -f 2
@@ -41,11 +41,11 @@
         - name: Add keyfile to LUKS partition
           become: true
           ansible.builtin.shell: |
-            printf '%s\n' "{{ host_config.luks_pass }}" | cryptsetup luksAddKey {{ luks_part }} /keyfile
+            printf '%s\n' "{{ host_config.luks_pass }}" | cryptsetup luksAddKey {{ host_config.luks_part }} /keyfile
           no_log: true
 
         - name: Show LUKS header info
-          ansible.builtin.command: cryptsetup luksDump {{ luks_part }}
+          ansible.builtin.command: cryptsetup luksDump {{ host_config.luks_part }}
           register: luksdump
           changed_when: false
 

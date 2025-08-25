@@ -12,8 +12,9 @@ K.map({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<cr><Esc>", { desc = "Save file" }
 K.map({ "i", "v", "n", "s" }, "<A-S>", "<cmd>source %<cr><Esc>", { desc = "Source file" })
 
 -- Sessions
-K.map("n", "<leader>ss", "<cmd>mksession! ~/.config/nvim/last_session.vim<CR>", { desc = "Store session" })
-K.map("n", "<leader>sr", "<cmd>source ~/.config/nvim/last_session.vim<CR>", { desc = "Restore session" })
+-- "$HOME/.config/nvim-undodir")
+K.map("n", "<leader>ss", "<cmd>mksession! ~/.config/nvim-session/last_session.vim<CR>", { desc = "Store session" })
+K.map("n", "<leader>sr", "<cmd>source ~/.config/nvim-session/last_session.vim<CR>", { desc = "Restore session" })
 
 -- Toggle Relativenumbers
 K.map("n", "<leader>#", "<cmd>set rnu!<CR>", { desc = "Toggle line numbers" })

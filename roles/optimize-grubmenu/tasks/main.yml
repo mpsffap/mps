@@ -3,8 +3,8 @@
   ansible.builtin.copy:
     src: "{{ src_themefiles }}/{{ item }}"
     dest: "{{ dst_themefiles }}/"
-    owner: "{{ target_user }}"
-    group: "{{ target_user }}"
+    owner: "root"
+    group: "root"
     mode: "0700"
   loop: "{{ grub_themes }}"
   when: grub_themes is defined
@@ -13,8 +13,8 @@
   ansible.builtin.copy:
     src: "{{ src_iconfiles }}/{{ item }}"
     dest: "{{ dst_iconfiles }}/"
-    owner: "{{ target_user }}"
-    group: "{{ target_user }}"
+    owner: "root"
+    group: "root"
     mode: "0700"
   loop: "{{ grub_icons }}"
   when: grub_icons is defined
