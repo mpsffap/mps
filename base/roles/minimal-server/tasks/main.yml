@@ -1,0 +1,16 @@
+---
+- name: Get list of identity names for this host
+  ansible.builtin.set_fact:
+    host_config: >-
+      {{
+        config_hosts.hosts[inventory_hostname]
+        if inventory_hostname in config_hosts.hosts
+        else config_defaults.hosts[inventory_hostname]
+      }}
+
+# - name: Include essential apt packages
+#   ansible.builtin.include_tasks: essentials.yml
+- name: Include vim config
+  ansible.builtin.include_tasks: vim.yml
+- name: Include bash config
+  ansible.builtin.include_tasks: bash.yml

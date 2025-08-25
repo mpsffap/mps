@@ -1,0 +1,76 @@
+---
+- name: Get LUKS version of the device
+  become: true
+  ansible.builtin.shell: |
+    cryptsetup luksDump {{ host_config.luks_part }} \
+    | grep '^Version:' \
+    | tr -d '\t ' \
+    | cut -d ':' -f 2
+  register: luks_version
+  changed_when: false
+
+- name: Add keyfile for unlocking LUKS at boot
+  become: true
+  block:
+    - name: Check if /boot is listed in /etc/fstab
+      ansible.builtin.command: grep -c " /boot " /etc/fstab
+      register: has_boot
+      changed_when: false
+      failed_when: false
+
+    - name: Check if keyfile is already listed in /etc/crypttab
+      ansible.builtin.command: grep -c "/keyfile" /etc/crypttab
+      register: has_keyfile
+      changed_when: false
+      failed_when: false
+
+    - name: Skip block if /boot is separate or keyfile already present
+      block:
+        - name: Create random keyfile
+          ansible.builtin.command: dd bs=512 count=4 if=/dev/random of=/keyfile iflag=fullblock
+          args:
+            creates: /keyfile
+
+        - name: Set permissions on keyfile
+          ansible.builtin.file:
+            path: /keyfile
+            mode: "0600"
+            owner: root
+            group: root
+
+        - name: Add keyfile to LUKS partition
+          become: true
+          ansible.builtin.shell: |
+            printf '%s\n' "{{ host_config.luks_pass }}" | cryptsetup luksAddKey {{ host_config.luks_part }} /keyfile
+          no_log: true
+
+        - name: Show LUKS header info
+          ansible.builtin.command: cryptsetup luksDump {{ host_config.luks_part }}
+          register: luksdump
+          changed_when: false
+
+        - name: Modify /etc/crypttab to use keyfile
+          ansible.builtin.replace:
+            path: /etc/crypttab
+            regexp: " none luks,discard"
+            replace: " /keyfile luks,discard,key-slot=1"
+
+        - name: Ensure KEYFILE_PATTERN is set in cryptsetup-initramfs conf-hook
+          ansible.builtin.lineinfile:
+            path: /etc/cryptsetup-initramfs/conf-hook
+            line: 'KEYFILE_PATTERN="/keyfile"'
+            insertafter: EOF
+            create: true
+            owner: root
+            group: root
+            mode: "0600"
+
+        - name: Ensure UMASK=0077 is set in initramfs.conf
+          ansible.builtin.lineinfile:
+            path: /etc/initramfs-tools/initramfs.conf
+            line: "UMASK=0077"
+            insertafter: EOF
+
+        - name: Update initramfs for all kernels
+          ansible.builtin.command: update-initramfs -u -k all
+      when: has_boot.rc != 0 and has_keyfile.rc != 0 and luks_version.stdout | trim == '1'

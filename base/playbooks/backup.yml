@@ -1,0 +1,6 @@
+---
+- name: Restore backup data
+  hosts: hive
+  become: true
+  roles:
+    - backup-essentials

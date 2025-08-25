@@ -1,0 +1,75 @@
+---
+- name: Get list of identity names for this host
+  ansible.builtin.set_fact:
+    user: >-
+      {{
+        users
+        | selectattr('name', 'equalto', hostuser)
+        | selectattr('config_gaming', 'equalto', true)
+        | list
+        | first
+        | default({}, true)
+      }}
+  no_log: "{{ respect_nolog }}"
+
+- name: Create mps folders
+  block:
+    - name: Add i386 architecture
+      ansible.builtin.command: dpkg --add-architecture i386
+      become: true
+      args:
+        creates: /var/lib/dpkg/arch
+
+    - name: Ensure apt cache is updated
+      ansible.builtin.apt:
+        update-cache: true
+
+    - name: Install essentials gaming
+      ansible.builtin.apt:
+        name:
+          - xserver-xorg-video-nouveau
+        state: absent
+      become: true
+
+    - name: Install essentials gaming
+      ansible.builtin.apt:
+        name:
+          - nvidia-driver
+          - nvidia-driver-libs:i386
+          - nvidia-vulkan-icd:i386
+          - nvidia-vulkan-common:i386
+        state: present
+      become: true
+
+    - name: Install essentials nvidia dkms
+      ansible.builtin.apt:
+        name:
+          - nvidia-open-kernel-dkms
+          - nvidia-driver
+          - firmware-misc-nonfree
+        state: present
+      become: true
+
+    - name: Check Secure Boot state
+      block:
+        - name: Check Secure Boot state
+          ansible.builtin.command: mokutil --sb-state
+          register: sb_state
+          changed_when: false
+          ignore_errors: true
+        - name: Generate MOK using DKMS
+          ansible.builtin.command: dkms generate_mok
+          register: mok_gen
+          changed_when: "'MOK successfully generated' in mok_gen.stdout"
+
+        - name: Import MOK key
+          ansible.builtin.command: mokutil --import {{ dst_nvidia_mok_key }}
+          register: mok_import
+          changed_when: "'is enrolled' not in mok_import.stdout"
+
+        - name: List newly imported MOKs
+          ansible.builtin.command: mokutil --list-new
+          register: mok_list
+          changed_when: false
+      when: user != {}
+  when: user != {}

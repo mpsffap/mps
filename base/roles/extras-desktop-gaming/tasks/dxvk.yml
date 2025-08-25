@@ -1,0 +1,58 @@
+---
+- name: Configure compiler alternatives
+  ansible.builtins.shell: |
+    update-alternatives --set x86_64-w64-mingw32-gcc /usr/bin/x86_64-w64-mingw32-gcc-posix
+    update-alternatives --set x86_64-w64-mingw32-g++ /usr/bin/x86_64-w64-mingw32-g++-posix
+    update-alternatives --set i686-w64-mingw32-gcc /usr/bin/i686-w64-mingw32-gcc-posix
+    update-alternatives --set i686-w64-mingw32-g++ /usr/bin/i686-w64-mingw32-g++-posix
+
+- name: Ensure DXVK destination directory exists
+  ansible.builtins.file:
+    path: "{{ dst_dxvk_repo }}"
+    state: directory
+    mode: "0755"
+    recurse: true
+
+- name: Clone DXVK repository recursively
+  ansible.builtins.git:
+    repo: "{{ url_dxvk_repo }}"
+    dest: "{{ dst_dxvk_repo }}"
+    recursive: true
+    update: false
+    version: master
+
+- name: Ensure build directory exists inside DXVK repo
+  ansible.builtins.file:
+    path: "{{ dst_dxvk_repo }}/build"
+    state: directory
+    mode: "0755"
+
+- name: Run DXVK build script
+  ansible.builtins.command: "./package-release.sh master build --no-package"
+  args:
+    chdir: "{{ dst_dxvk_repo }}"
+
+- name: Ensure Lutris runtime directory exists
+  ansible.builtins.file:
+    path: "{{ dst_lutris_runtime }}"
+    state: directory
+    mode: "0755"
+    recurse: true
+
+- name: Copy DXVK build into Lutris runtime
+  ansible.builtins.copy:
+    src: "{{ dst_dxvk_repo }}/build/dxvk-master"
+    dest: "{{ dst_lutris_runtime }}/"
+    remote_src: true
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: preserve
+
+- name: Ensure user owns Lutris share directory
+  ansible.builtins.file:
+    path: "{{ home_dir }}/.local/share/lutris"
+    state: directory
+    recurse: true
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0755"

@@ -1,0 +1,17 @@
+---
+- name: Force kill processes for user '{{ user.accname }}'
+  ansible.builtin.shell: "pkill -9 -u {{ user.accname }} || true"
+  ignore_errors: true
+
+- name: Delete user {{ user.accname }}
+  ansible.builtin.user:
+    name: "{{ user.accname }}"
+    state: absent
+    remove: true
+    force: true
+
+- name: Delete user dir for user '{{ user.accname }}'
+  ansible.builtin.file:
+    name: "{{ user.homedir }}"
+    state: absent
+    force: true

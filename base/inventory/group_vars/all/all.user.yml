@@ -1,0 +1,7 @@
+# User config
+build_type: test
+target_user: "all"
+state: "present"
+user_action: "add"
+admin_group: "admin"
+deployment_group: "deployment"

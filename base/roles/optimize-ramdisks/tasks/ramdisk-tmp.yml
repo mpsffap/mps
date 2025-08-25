@@ -1,0 +1,33 @@
+---
+- name: Unmount tmp
+  ansible.builtin.command: umount /tmp
+  ignore_errors: true
+
+- name: Remove tmp dir
+  ansible.builtin.file:
+    path: "/tmp"
+    owner: "root"
+    group: "root"
+    state: "absent"
+
+- name: Create tmp directory
+  ansible.builtin.file:
+    path: /tmp
+    owner: "root"
+    group: "root"
+    mode: "0777"
+    state: directory
+
+- name: Ensure mountpoint in fstab
+  lineinfile:
+    path: "/etc/fstab"
+    regexp: "^tmpfs /tmp"
+    line: "tmpfs /tmp tmpfs mode=1777,nosuid,nodev 0 0"
+    state: present
+
+- name: Reload systemd manager configuration
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Remount all filesystems
+  ansible.builtin.command: mount -a

@@ -1,0 +1,44 @@
+---
+- name: Get list of identity names for this host
+  ansible.builtin.set_fact:
+    user: >-
+      {{
+        users
+        | selectattr('name', 'equalto', hostuser)
+        | selectattr('config_desktop', 'equalto', true)
+        | list
+        | first
+        | default({}, true)
+      }}
+  no_log: "{{ respect_nolog }}"
+
+- name: Create mps folders
+  block:
+    - name: Copy Config
+      ansible.builtin.copy:
+        src: "{{ src_dotfiles }}/{{ item }}"
+        dest: "{{ user.homedir }}/{{ item }}"
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        mode: "0700"
+      loop: "{{ dsk_essentials }}"
+      when: dsk_essentials is defined
+
+    - name: Copy Snippets
+      ansible.builtin.copy:
+        src: "{{ src_snippets }}/{{ item }}"
+        dest: "{{ user.homedir }}/mps/snippets/{{ item }}"
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        mode: "0700"
+      loop: "{{ dsk_snippets }}"
+      when: dsk_snippets is defined
+
+    - name: Copy Images
+      ansible.builtin.copy:
+        src: "{{ src_images }}"
+        dest: "{{ dst_images }}"
+        owner: "root"
+        group: "root"
+        mode: "0755"
+  when: user != {}

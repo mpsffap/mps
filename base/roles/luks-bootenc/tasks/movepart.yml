@@ -1,0 +1,104 @@
+---
+- name: Get LUKS version of the device
+  become: true
+  ansible.builtin.shell: |
+    cryptsetup luksDump {{ host_config.luks_part }} \
+    | grep '^Version:' \
+    | tr -d '\t ' \
+    | cut -d ':' -f 2
+  register: luks_version
+  changed_when: false
+
+- name: Remove initramfs breakpoint in GRUB config
+  become: true
+  block:
+    - name: Remove existing GRUB_CMDLINE_LINUX_DEFAULT lines from /etc/default/grub
+      ansible.builtin.lineinfile:
+        path: /etc/default/grub
+        regexp: "^GRUB_CMDLINE_LINUX_DEFAULT="
+        state: absent
+
+    - name: Set default GRUB_CMDLINE_LINUX_DEFAULT without break=mount to /etc/default/grub
+      ansible.builtin.lineinfile:
+        path: /etc/default/grub
+        line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"'
+        insertafter: EOF
+
+    - name: Update grub configuration
+      ansible.builtin.command: update-grub
+
+    - name: Remove the initramfs run_once script
+      ansible.builtin.file:
+        path: /etc/initramfs-tools/scripts/init-premount/run_once
+        state: absent
+
+    - name: Check if /boot is listed in /etc/fstab
+      ansible.builtin.shell: grep -c " /boot " /etc/fstab
+      register: has_boot
+      changed_when: false
+      ignore_errors: true
+
+    - name: Abort if /boot not found in /etc/fstab
+      ansible.builtin.meta: end_play
+      when: has_boot.stdout | int == 0
+
+    - name: Remount /boot read-only
+      ansible.builtin.command: mount -o remount,ro /boot
+      ignore_errors: true
+
+    - name: Copy /boot to /boot.tmp preserving attributes
+      ansible.builtin.command: cp -axT /boot /boot.tmp
+
+    - name: Unmount /boot/efi
+      ansible.builtin.mount:
+        path: /boot/efi
+        state: unmounted
+      ignore_errors: true
+
+    - name: Unmount /boot
+      ansible.builtin.mount:
+        path: /boot
+        state: unmounted
+      ignore_errors: true
+
+    - name: Remove /boot directory
+      ansible.builtin.file:
+        path: /boot
+        state: absent
+
+    - name: Move /boot.tmp to /boot
+      ansible.builtin.command: mv -T /boot.tmp /boot
+
+    - name: Remount /boot/efi again
+      ansible.builtin.command: mount /boot/efi
+      ignore_errors: true
+
+    - name: Remove /boot entry from /etc/fstab
+      ansible.builtin.lineinfile:
+        path: /etc/fstab
+        regexp: " /boot "
+        state: absent
+      ignore_errors: true
+
+    - name: Add GRUB_ENABLE_CRYPTODISK=y to /etc/default/grub
+      ansible.builtin.lineinfile:
+        path: /etc/default/grub
+        line: "GRUB_ENABLE_CRYPTODISK=y"
+        insertafter: EOF
+
+    - name: Unmount /boot before updating grub
+      ansible.builtin.mount:
+        path: /boot
+        state: unmounted
+
+    - name: Install grub to disk partition
+      ansible.builtin.command: grub-install "{{ host_config.luks_part }}"
+
+    - name: Update grub configuration
+      command: update-grub
+
+    - name: Cleanup /boot.tmp if exists
+      ansible.builtin.file:
+        path: /boot.tmp
+        state: absent
+  when: luks_version.stdout | trim == '1'

@@ -1,0 +1,57 @@
+- name: Ensure font directory exists
+  ansible.builtin.file:
+    path: "{{ dst_fontdir }}"
+    state: directory
+    mode: "0755"
+
+- name: Install fonts
+  block:
+    - name: Download font zip or font file
+      ansible.builtin.get_url:
+        url: "{{ item.url }}"
+        dest: "{{ dst_fontdir }}/{{ item.name }}.zip"
+        owner: "root"
+        group: "root"
+        mode: "0755"
+      loop: "{{ fonts }}"
+
+    - name: Ensure the destination directory for the font is present
+      ansible.builtin.file:
+        path: "{{ item.dst_unzip_path }}"
+        state: directory
+        mode: "0755"
+      loop: "{{ fonts }}"
+
+    - name: Unzip font if necessary
+      ansible.builtin.unarchive:
+        src: "{{ dst_fontdir }}/{{ item.name }}.zip"
+        dest: "{{ item.dst_unzip_path }}"
+        owner: "root"
+        group: "root"
+        mode: "0755"
+        remote_src: true
+      loop: "{{ fonts }}"
+      when: item.file_only is not defined or not item.file_only
+
+    - name: Copy font if necessary
+      ansible.builtin.copy:
+        src: "{{ dst_fontdir }}/{{ item.name }}.zip"
+        dest: "{{ item.dst_unzip_path }}/{{ item.name }}.ttf"
+        owner: "root"
+        group: "root"
+        mode: "0755"
+        remote_src: true
+      loop: "{{ fonts }}"
+      when: item.file_only is defined and item.file_only
+
+    - name: Cleanup after unzipping (optional)
+      ansible.builtin.file:
+        path: "{{ dst_fontdir }}/{{ item.name }}.zip"
+        state: absent
+      when: item.cleanup is defined
+      loop: "{{ fonts }}"
+
+    - name: Rebuild font cache
+      ansible.builtin.command:
+        cmd: fc-cache -f -v
+      become: true

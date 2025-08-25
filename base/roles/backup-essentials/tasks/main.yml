@@ -1,0 +1,63 @@
+---
+- name: Copy user settings
+  block:
+    - name: Create ssh folder
+      become: true
+      become_user: "{{ target_user }}"
+      ansible.builtin.file:
+        path: "{{ target_user_dir }}/.ssh/"
+        state: directory
+        owner: "{{ target_user }}"
+        group: "{{ target_user }}"
+        mode: "0700"
+
+    - name: Copy all files from local folder
+      become: true
+      become_user: "{{ target_user }}"
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ target_user_dir }}/.ssh"
+        owner: "{{ target_user }}"
+        group: "{{ target_user }}"
+        mode: "0600"
+      loop: "{{ lookup('fileglob', src_backup_ssh, wantlist=True) }}"
+      delegate_to: localhost
+
+    - name: Get Firefox profile name
+      set_fact:
+        firefox_profile_path: "{{ lookup('ini', 'Path section=Profile0 file=~/.mozilla/firefox/profiles.ini') }}"
+      become: true
+      become_user: "{{ target_user }}"
+
+    - name: Build full profile path
+      set_fact:
+        firefox_profile_dir: "{{ target_user_dir }}/.mozilla/firefox/{{ firefox_profile_path }}"
+      become: true
+      become_user: "{{ target_user }}"
+
+    - name: Check if the directory exists
+      ansible.builtin.stat:
+        path: "{{ firefox_profile_dir }}"
+      register: dir_check
+
+    - name: Copy bookmarks file into profile
+      become: true
+      become_user: "{{ target_user }}"
+      when: dir_check.stat.exists and dir_check.stat.isdir
+      ansible.builtin.copy:
+        src: "{{ src_backup }}/firefox/places.sqlite"
+        dest: "{{ firefox_profile_dir }}/places.sqlite"
+        owner: "{{ target_user }}"
+        group: "{{ target_user }}"
+        mode: "0600"
+  when: target_user != 'root'
+
+- name: Copy nerdtree bookmarks file (nvim)
+  ansible.builtin.copy:
+    src: "{{ src_backup }}/home/.NERDTreeBookmarks"
+    dest: "{{ target_user_dir }}/"
+    owner: "{{ target_user }}"
+    group: "{{ target_user }}"
+    mode: "0600"
+  become: true
+  become_user: "{{ target_user }}"

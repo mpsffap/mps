@@ -1,0 +1,26 @@
+---
+# -- Grub
+mps_folders:
+  - scratch
+  - snippets
+  - iso
+  - repo
+  - tools
+  - disks
+  - docs
+  - secrets
+  - venv
+# -- Shell
+zsh_plugins:
+  zsh-bat: "https://github.com/fdellwing/zsh-bat.git"
+  zsh-you-should-use: "https://github.com/MichaelAquilina/zsh-you-should-use.git"
+  zsh-syntax-highlighting: "https://github.com/zsh-users/zsh-syntax-highlighting"
+  zsh-autosuggestions: "https://github.com/zsh-users/zsh-autosuggestions"
+zsh_files:
+  - .zshrc
+tmux_files:
+  - .config/tmux
+tmuxinator_files:
+  - .config/tmuxinator
+other_dotfiles:
+  - kitty

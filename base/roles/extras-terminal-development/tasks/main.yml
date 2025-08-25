@@ -1,0 +1,28 @@
+---
+- name: Get list of identity names for this host
+  ansible.builtin.set_fact:
+    host_config: >-
+      {{
+        config_hosts.hosts[inventory_hostname]
+        if inventory_hostname in config_hosts.hosts
+        else config_defaults.hosts[inventory_hostname]
+      }}
+
+- name: Include docker task
+  ansible.builtin.include_tasks: docker.yml
+- name: Include java task
+  ansible.builtin.include_tasks: java.yml
+- name: Include latex configs
+  #   ansible.builtin.include_tasks: latex.yml
+  # - name: Include python configs
+  ansible.builtin.include_tasks: python.yml
+- name: Include unity configs
+  ansible.builtin.include_tasks: unity.yml
+
+- name: Handle dotnet config users
+  include_tasks: dotnet.yml
+  loop: "{{ host_config.users }}"
+  loop_control:
+    loop_var: hostuser
+  when: target_user == "all"
+  no_log: "{{ respect_nolog }}"

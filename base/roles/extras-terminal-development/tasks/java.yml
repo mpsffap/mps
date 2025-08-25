@@ -1,0 +1,8 @@
+---
+- name: Install essentials java
+  ansible.builtin.apt:
+    name:
+      - default-jdk
+      - default-jre
+    state: present
+  become: true

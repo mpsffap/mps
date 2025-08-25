@@ -1,0 +1,71 @@
+---
+- name: Get list of identity names for this host
+  ansible.builtin.set_fact:
+    user: >-
+      {{
+        users
+        | selectattr('name', 'equalto', hostuser)
+        | selectattr('config_desktop', 'equalto', true)
+        | list
+        | first
+        | default({}, true)
+      }}
+  no_log: "{{ respect_nolog }}"
+
+- name: Create mps folders
+  block:
+    - name: Create xsessions folders
+      ansible.builtin.file:
+        path: "/usr/share/xsessions"
+        state: "directory"
+        owner: "root"
+        group: "root"
+        mode: "0755"
+
+    - name: Copy xsession file
+      ansible.builtin.copy:
+        src: "{{ src_dotfiles }}/.config/qtile/qtile.desktop"
+        dest: "/usr/share/xsessions/qtile.desktop"
+        owner: "root"
+        group: "root"
+        mode: "0755"
+
+    - name: Create runner
+      ansible.builtin.copy:
+        src: "{{ src_snippets }}/qtilerun.bash"
+        dest: "/usr/local/bin/qtilerun.bash"
+        owner: "root"
+        group: "root"
+        mode: "0755"
+
+    - name: Create qtile folders
+      ansible.builtin.file:
+        path: "{{ user.homedir }}/.config/qtile"
+        state: "absent"
+
+    - name: Copy qtile config
+      ansible.builtin.copy:
+        src: "{{ src_dotfiles }}/.config/qtile"
+        dest: "{{ user.homedir }}/.config/"
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        mode: "0700"
+
+    - name: Copy picom config
+      ansible.builtin.copy:
+        src: "{{ src_dotfiles }}/.config/picom.conf"
+        dest: "{{ user.homedir }}/.config/"
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        mode: "0700"
+
+    - name: Copy desktop config files
+      ansible.builtin.copy:
+        src: "{{ src_dotfiles }}/{{ item }}"
+        dest: "{{ user.homedir }}/{{ item }}"
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        mode: "0700"
+      loop: "{{ dsk_default_config }}"
+      when: dsk_default_config is defined
+  when: user != {}

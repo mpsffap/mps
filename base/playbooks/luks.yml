@@ -1,0 +1,9 @@
+---
+- name: Setup encrypted boot partition
+  hosts: hive
+  become: true
+  vars_files:
+    - "../vars/vault_users_{{ build_type }}.yml"
+    - "../vars/vault_config_{{ build_type }}.yml"
+  roles:
+    - luks-bootenc
