@@ -1,0 +1,16 @@
+- name: Essentials Apparmor
+  ansible.builtin.apt:
+    name:
+      - apparmor-utils
+      - apparmor-profiles
+      - apparmor-profiles-extra
+    state: present
+  become: true
+
+- name: Copy runc profile for apparmor
+  ansible.builtin.template:
+    src: "{{ src_etcfiles }}/apparmor.d/runc"
+    dest: "/etc/apparmor.d/runc"
+    owner: "root"
+    group: "root"
+    mode: "0744"

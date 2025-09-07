@@ -42,21 +42,21 @@
       become: true
       become_user: "{{ user.accname }}"
 
-    - name: Check if cargo tools are already installed
+    - name: Check if cargo yazi is already installed
       ansible.builtin.stat:
-        path: "{{ user.homedir }}/.cargo/bin/fd"
-      register: cargo_fd
+        path: "{{ user.homedir }}/.cargo/bin/yazi"
+      register: cargo_yazi
 
-    - name: Install Cargo tools only if not already installed
+    - name: Install Cargo yazi only if not already installed
       ansible.builtin.shell: |
         source {{ user.homedir }}/.cargo/env
-        cargo install fd-find tree-sitter-cli
+        cargo install yazi-fm yazi-cli
       args:
         executable: /bin/bash
       environment:
         CARGO_HOME: "{{ user.homedir }}/.cargo"
         PATH: "{{ user.homedir }}/.cargo/bin:{{ ansible_env.PATH }}"
-      when: not cargo_fd.stat.exists
+      when: not cargo_yazi.stat.exists
       become: true
       become_user: "{{ user.accname }}"
   when: user != {}

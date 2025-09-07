@@ -19,12 +19,12 @@ deb12cis_disruption_high: true
 # E.g: If you want to execute the tasks of Section 1 you should set the "_section1" variable to true.
 # If you do not want the tasks from that section to get executed you simply set the variable to "false".
 deb12cis_section1: true
-deb12cis_section2: true
-deb12cis_section3: true
-deb12cis_section4: true
-deb12cis_section5: true
-deb12cis_section6: true
-deb12cis_section7: true
+deb12cis_section2: false
+deb12cis_section3: false
+deb12cis_section4: false
+deb12cis_section5: false
+deb12cis_section6: false
+deb12cis_section7: false
 
 # This is used for audit purposes to run only specific level use the tags
 # e.g.
@@ -913,6 +913,7 @@ deb12cis_sudolog_location: "/var/log/sudo.log"
 # for escalation. Feel free to edit it according to your needs.
 deb12cis_sudoers_exclude_nopasswd_list:
   - admin
+  - deploy
 
 ##  Control 5.2.6
 # This variable sets the duration (in minutes) during which a user's authentication credentials

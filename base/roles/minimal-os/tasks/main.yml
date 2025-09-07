@@ -9,3 +9,5 @@
   ansible.builtin.include_tasks: locale.yml
 - name: Include time
   ansible.builtin.include_tasks: time.yml
+- name: Include essential apparmor packages
+  ansible.builtin.include_tasks: apparmor.yml

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # shellcheck disable=SC2139,SC2015,SC2142,SC2154
 
@@ -54,17 +54,17 @@ alias rp='rsync -arvP --info=progress2'
 
 # diskinfo
 alias fs='df -h | head -n1 ; df -h | tail -n +2 | sort -k1,5'
-alias info-fs='df -h | head -n1 ; df -h | tail -n +2 | sort -k1,5'
-
-# diskinfo
-alias info-zram='sudo zramctl'
 
 # mount
 alias mo='sudo mount'
 alias moa='sudo mount -a'
 alias mu='sudo unmount'
 alias fstab='sudo nvim /etc/fstab'
-alias info-mounts='sudo mount -a'
+
+# apparmor
+alias aa='sudo aa-status'
+alias aa-enforce-all='sudo aa-enforce /etc/apparmor.d/*'
+alias aa-complain-all='sudo aa-complain /etc/apparmor.d/*'
 
 # git
 alias gs='git status'
@@ -86,41 +86,24 @@ alias ave='ansible-vault edit --vault-pass-file vault/vault_pass.txt'
 alias avc='ansible-vault create --vault-pass-file vault/vault_pass.txt'
 alias apb='ansible-playbook --become --vault-pass-file vault/vault_pass.txt -i inventory/hosts'
 
-# Docker
-alias dps="docker ps -a"
-alias dcexec="docker exec -ti "
-alias dcstop="docker container stop "
-alias dckill="docker container kill "
-alias dcrm="docker container rm"
-alias dnls="docker network ls"
-alias dvls="docker volume ls"
-alias dirm="docker image rm"
-alias dia="docker images -a"
-alias diatagged='docker images -a | grep -v "<none>"'
 
 # network
 alias ns='sudo netstat -tulpn |sort -k 4 -n'
 alias nsao='sudo netstat -tulpano |sort -k 4 -n'
-alias info-net='sudo netstat -tulpano |sort -k 4 -n'
 
 # iptables
 alias iptl='sudo iptables -L -n -v'
 alias iptln='sudo iptables -L -n -v -tnat'
-alias info-fw='sudo iptables -L -n -v -tnat'
-alias info-fwnat='sudo iptables -L -n -v -tnat'
 
 # bridging
 alias sbs='sudo brctl show'
-alias info-bridges='sudo brctl show'
 
 # routing
 alias srn='sudo route -n'
-alias info-routes='sudo route -n'
 
 # ifconfig
 alias sif='sudo ifconfig'
 alias sifa='sudo ifconfig -a'
-alias info-nics='sudo ifconfig -a'
 
 # systemd
 alias sdr='sudo systemctl daemon-reload'
@@ -145,7 +128,6 @@ alias tools="z ~/mps/tools"
 alias venv="z ~/mps/venv"
 alias vm="z ~/mps/vm"
 alias wsp="z ~/mps/wsp"
-alias info-mps="ls -la ~/mps/"
 
 # More fancy colors
 if [ -x /usr/bin/dircolors ]; then
@@ -174,7 +156,6 @@ alias qvm_ssh="quickvm.bash -a ssh"
 
 # public ip
 alias whoamip='echo $(curl -s ifconfig.me)'
-alias info-pubip='echo $(curl -s ifconfig.me)'
 
 # tmux session control
 alias tls="tmux ls"
@@ -182,7 +163,6 @@ alias tas="tmux attach -t "
 alias tns="tmux new -s "
 alias tks="tmux kill-server"
 alias tkss="tmux kill-session -t "
-alias info-tmux="tmux ls"
 alias muxme="~/mps/snippets/launch_tmux.bash"
 alias muxme-matrix="~/mps/snippets/launch_tmux.bash 'hm && ho'"
 
@@ -200,11 +180,69 @@ alias cfg-bashrc="nvim ~/.bashrc && source ~/.bashrc"
 alias cfg-zshrc="nvim ~/.zshrc && source ~/.zshrc"
 alias cfg-hosts="sudo nvim /etc/hosts"
 alias cfg-fstab="sudo nvim /etc/fstab"
-alias cfg-crypttab="sudo nvim /etc/crypttab"
+alias cfg-net="sudo nvim /etc/network/interfaces"
+alias cfg-crypt="sudo nvim /etc/crypttab"
 alias cfg-alias-common="nvim ~/.config/bashrc/.bashrc_alias_common && source ~/.config/bashrc/.bashrc_alias_common"
 alias cfg-alias-custom="nvim ~/.config/bashrc/.bashrc_alias_custom && source ~/.config/bashrc/.bashrc_alias_custom"
 
+# info
+alias info-mpsdir="echo $MPSDIR"
+alias info-tmux="tmux ls"
+alias info-pubip='echo $(curl -s ifconfig.me)'
+alias info-mps="ls -la ~/mps/"
+alias info-fs='df -h | head -n1 ; df -h | tail -n +2 | sort -k1,5'
+alias info-zram='sudo zramctl'
+alias info-mounts='sudo mount -a'
+alias info-net='sudo netstat -tulpano |sort -k 4 -n'
+alias info-fw='sudo iptables -L -n -v -tnat'
+alias info-fwnat='sudo iptables -L -n -v -tnat'
+alias info-bridges='sudo brctl show'
+alias info-routes='sudo route -n'
+alias info-nics='sudo ifconfig -a'
+
 # Custom folders aliases
 alias mpsrepo="z $MPSDIR"
-alias info-mpsdir="echo $MPSDIR"
+
+# Docker
+alias dps="docker ps -a"
+alias dcexec="docker exec -ti "
+alias dcstop="docker container stop "
+alias dckill="docker container kill "
+alias dcrm="docker container rm"
+alias dnls="docker network ls"
+alias dvls="docker volume ls"
+alias dirm="docker image rm"
+alias dia="docker images -a"
+alias diatagged='docker images -a | grep -v "<none>"'
+alias dl="docker logs -f"
+dsh() { docker exec -it "$1" sh ; }
+dbash() { docker exec -it "$1" bash ; }
+dips() {
+    local containers
+    if [ -n "$1" ]; then
+        containers=$(docker ps -q -f "name=$1")
+        if [ -z "$containers" ]; then
+            echo "Error: Container '$1' not found or is not running."
+            return 1
+        fi
+    else
+        containers=$(docker ps -q)
+    fi
+    if [ -z "$containers" ]; then
+        echo "No running Docker containers found."
+        return 1
+    fi
+    echo "Listing running Docker containers and their IP addresses:"
+    echo "--------------------------------------------------------"
+    for container in $containers; do
+        name=$(docker inspect --format '{{.Name}}' "$container" | sed 's/\///');
+        ips=$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}},{{end}}' "$container");
+        echo "Container: $name ($container)";
+        IFS=',' read -ra ip_array <<< "$ips";
+        for ip in "${ip_array[@]}"; do
+            [ -n "$ip" ] && echo "  - IP: $ip";
+        done;
+        echo "--------------------------------------------------------";
+    done
+}
 
