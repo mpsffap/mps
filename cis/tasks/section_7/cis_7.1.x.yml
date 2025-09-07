@@ -1,5 +1,4 @@
 ---
-
 - name: "7.1.1 | PATCH | Ensure permissions on /etc/passwd are configured"
   when: deb12cis_rule_7_1_1
   tags:
@@ -14,7 +13,7 @@
     path: /etc/passwd
     owner: root
     group: root
-    mode: 'u-x,go-wx'
+    mode: "u-x,go-wx"
 
 - name: "7.1.2 | PATCH | Ensure permissions on /etc/passwd- are configured"
   when: deb12cis_rule_7_1_2
@@ -30,7 +29,7 @@
     path: /etc/passwd-
     owner: root
     group: root
-    mode: 'u-x,go-wx'
+    mode: "u-x,go-wx"
 
 - name: "7.1.3 | PATCH | Ensure permissions on /etc/group are configured"
   when: deb12cis_rule_7_1_3
@@ -46,7 +45,7 @@
     path: /etc/group
     owner: root
     group: root
-    mode: 'u-x,go-wx'
+    mode: "u-x,go-wx"
 
 - name: "7.1.4 | PATCH | Ensure permissions on /etc/group- are configured"
   when: deb12cis_rule_7_1_4
@@ -62,7 +61,7 @@
     path: /etc/group-
     owner: root
     group: root
-    mode: 'u-x,go-wx'
+    mode: "u-x,go-wx"
 
 - name: "7.1.5 | PATCH | Ensure permissions on /etc/shadow are configured"
   when: deb12cis_rule_7_1_5
@@ -78,7 +77,7 @@
     path: /etc/shadow
     owner: root
     group: root
-    mode: 'ugo-rwx'
+    mode: "ugo-rwx"
 
 - name: "7.1.6 | PATCH | Ensure permissions on /etc/shadow- are configured"
   when: deb12cis_rule_7_1_6
@@ -91,10 +90,10 @@
     - NIST800-53R5_AC-3
     - NIST800-53R5_MP-2
   ansible.builtin.file:
-    path: /etc/shadow-
+    path: /etc/shadow
     owner: root
     group: root
-    mode: 'ugo-rwx'
+    mode: "ugo-rwx"
 
 - name: "7.1.7 | PATCH | Ensure permissions on /etc/gshadow are configured"
   when: deb12cis_rule_7_1_7
@@ -110,7 +109,7 @@
     path: /etc/gshadow
     owner: root
     group: root
-    mode: 'ugo-rwx'
+    mode: "ugo-rwx"
 
 - name: "7.1.8 | PATCH | Ensure permissions on /etc/gshadow- are configured"
   when: deb12cis_rule_7_1_8
@@ -126,7 +125,7 @@
     path: /etc/gshadow-
     owner: root
     group: root
-    mode: 'ugo-rwx'
+    mode: "ugo-rwx"
 
 - name: "7.1.9 | PATCH | Ensure permissions on /etc/shells are configured"
   when: deb12cis_rule_7_1_9
@@ -142,7 +141,7 @@
     path: /etc/shells
     owner: root
     group: root
-    mode: 'u-x,go-wx'
+    mode: "u-x,go-wx"
 
 - name: "7.1.10 | PATCH | Ensure permissions on /etc/security/opasswd are configured"
   when: deb12cis_rule_7_1_10
@@ -158,7 +157,7 @@
     path: "{{ item }}"
     owner: root
     group: root
-    mode: 'u-x,go-rwx'
+    mode: "u-x,go-rwx"
   failed_when: discovered_file_exists.state not in '[ file, absent ]'
   register: discovered_file_exists
   loop:
@@ -189,8 +188,8 @@
         - discovered_worldwriteable_files.stdout_lines | length > 0
         - deb12cis_no_world_write_adjust
       ansible.builtin.file:
-        path: '{{ item }}'
-        mode: 'o-w'
+        path: "{{ item }}"
+        mode: "o-w"
         state: touch
       loop: "{{ discovered_worldwriteable_files.stdout_lines }}"
 
@@ -211,7 +210,7 @@
     - NIST800-53R5_AC-3
     - NIST800-53R5_MP-2
   vars:
-    warn_control_id: '7.1.12'
+    warn_control_id: "7.1.12"
   block:
     - name: "7.1.12 | AUDIT | Ensure no files or directories without an owner and a group exist | Get list files or directories"
       ansible.builtin.command: find {{ item.mount }} -xdev -type f {{ deb12cis_exclude_unowned_search_path }} \( -nouser -o -nogroup \) -not -fstype nfs
@@ -272,7 +271,7 @@
     - NIST800-53R5_AC-3
     - NIST800-53R5_MP-2
   vars:
-    warn_control_id: '7.1.13'
+    warn_control_id: "7.1.13"
   block:
     - name: "7.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Find SUID and SGID"
       ansible.builtin.command: find {{ item.mount }} -xdev -type f -perm \( -02000 or -04000 \) -not -fstype nfs
@@ -305,7 +304,7 @@
         - discovered_suid_sgid_files_flatten | length > 0
       ansible.builtin.file:
         path: "{{ item }}"
-        mode: 'u-s'
+        mode: "u-s"
       loop: "{{ discovered_suid_sgid_files_flatten }}"
 
     - name: "7.1.13 | AUDIT | Audit SUID executables | Warn Count"

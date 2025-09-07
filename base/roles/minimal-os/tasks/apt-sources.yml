@@ -37,6 +37,7 @@
   ansible.builtin.apt:
     name:
       - apt-utils
+      - apt-file
       - apt-transport-https
       - ca-certificates
     autoremove: true

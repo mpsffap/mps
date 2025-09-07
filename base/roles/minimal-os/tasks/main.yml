@@ -11,3 +11,5 @@
   ansible.builtin.include_tasks: time.yml
 - name: Include essential apparmor packages
   ansible.builtin.include_tasks: apparmor.yml
+- name: Include essential auditd packages
+  ansible.builtin.include_tasks: auditd.yml
