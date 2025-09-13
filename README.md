@@ -1,6 +1,34 @@
 # mps
 
-My Perfect System (Ansible)
+My Perfect System (Ansible)\\
+Not yours, but mine! So be warned!
+The system is a collection of ansible playbooks to turn a vanilla
+Debian installation into the system i like to work with.
+Generally, all dedicated installers are stored within the "installers" folder
+and are categorized into certain catgeories building on top of each other:
+
+- Minimal (Minimal installation)
+- Users (Initial user config)
+- Luks (Disk encryption)
+- Terminal (Customizing the terminal, e.g. terminal, nvim, nerdfonts, etc.)
+- Desktop (Customizing a qtile tiling window manager and related tools)
+- Optimize (Optimizations for various subtasks)
+- Extras (Everything not fitting in other categories)
+- Backup (Restore backups)
+
+Ansible playbooks to invoke groups of installers are provided.
+Each playbook might utilize data from either the templates folder
+or the snippets folder.
+Reasonable defaults are used wherever possible.
+
+## Examples
+
+```
+ansible-playbook playbooks/minimal.yml --vault-pass-file vault/vault_pass.txt
+ansible-playbook playbooks/terminal.yml --vault-pass-file vault/vault_pass.txt
+ansible-playbook playbooks/desktop.yml --vault-pass-file vault/vault_pass.txt
+ansible-playbook playbooks/optimize.yml --vault-pass-file vault/vault_pass.txt
+```
 
 ## Configuration
 
@@ -137,11 +165,31 @@ vault create --vault-pass-file vault/vault_pass.txt vault_config_prod.yml
 vault edit --vault-pass-file vault/vault_pass.txt vault_config_prod.yml
 ```
 
-## Examples
+## Screenshots
 
-```
-ansible-playbook playbooks/minimal.yml --vault-pass-file vault/vault_pass.txt
-ansible-playbook playbooks/terminal.yml --vault-pass-file vault/vault_pass.txt
-ansible-playbook playbooks/desktop.yml --vault-pass-file vault/vault_pass.txt
-ansible-playbook playbooks/optimize.yml --vault-pass-file vault/vault_pass.txt
-```
+![Neovim](screenshots/nvim.png) \
+Neovim with pre-installed Lsp support and various plugins
+
+![Debug](screenshots/debug.png) \
+Neovim-based debugging environment and for various languages
+
+![Terminal](screenshots/kitty.png) \
+Customized .bashrc, prompts, fonts, colorschemes, aliases and shortcuts
+
+![Desktop](screenshots/desktop.png) \
+Riced desktop, with custom virtual desktops, launchers, bars and shortcuts
+
+![Qtile](screenshots/qtile.png) \
+Qtile as dynamic tiling window manager
+
+## Main Configurations
+
+Some useful config files:
+
+- [Nvim](https://github.com/odem/mps/blob/main/dotfiles/.config/nvim/lua/main/keymap.lua)
+- [Nvim Plugins](https://github.com/odem/mps/tree/main/dotfiles/.config/nvim/lua/config)
+- [Qtile](https://github.com/odem/mps/blob/main/dotfiles/.config/qtile/keybinds.py)
+- [Tmux](https://github.com/odem/mps/blob/main/dotfiles/.config/tmux/tmux.conf.local)
+- [Kitty](https://github.com/odem/mps/blob/main/dotfiles/.config/kitty/kitty.conf)
+- [.bashrc](https://github.com/odem/mps/blob/main/dotfiles/.bashrc)
+- [Wallpapers](https://github.com/odem/mps/tree/main/dotfiles/.config/images)
