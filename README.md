@@ -136,3 +136,12 @@ Vault files can be created and edited with the usual ansible-vault commands.
 vault create --vault-pass-file vault/vault_pass.txt vault_config_prod.yml
 vault edit --vault-pass-file vault/vault_pass.txt vault_config_prod.yml
 ```
+
+## Examples
+
+```
+ansible-playbook playbooks/minimal.yml --vault-pass-file vault/vault_pass.txt
+ansible-playbook playbooks/terminal.yml --vault-pass-file vault/vault_pass.txt
+ansible-playbook playbooks/desktop.yml --vault-pass-file vault/vault_pass.txt
+ansible-playbook playbooks/optimize.yml --vault-pass-file vault/vault_pass.txt
+```
