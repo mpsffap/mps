@@ -1,6 +1,6 @@
 # mps
 
-My Perfect System (Ansible)\\
+My Perfect System (Ansible)
 Not yours, but mine! So be warned!
 The system is a collection of ansible playbooks to turn a vanilla
 Debian installation into the system i like to work with.
@@ -171,7 +171,7 @@ vault edit --vault-pass-file vault/vault_pass.txt vault_config_prod.yml
 Neovim with pre-installed Lsp support and various plugins
 
 ![Debug](screenshots/debug.png) \
-Neovim-based debugging environment and for various languages
+Neovim-based debugging environment for various languages
 
 ![Terminal](screenshots/kitty.png) \
 Customized .bashrc, prompts, fonts, colorschemes, aliases and shortcuts
