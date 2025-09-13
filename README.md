@@ -3,11 +3,17 @@
 Not yours, but mine! So be warned!
 The system is a collection of ansible playbooks to turn a vanilla
 Debian installation into the system i like to work with.
-Generally, all dedicated installers are stored within the "installers" folder
-and are categorized into certain catgeories building on top of each other:
+Configurations can be made in the "inventory/group_vars/all" directory.
+Reasonable defaults are used wherever possible.
 
-- Minimal (Minimal installation)
+## Playbooks
+
+Generally, all dedicated playbooks are stored within the "playbooks" folder
+and are categorized into certain catgeories building on top of each other.
+Each playbook might utilize data from the templates folder and its subfolders.
+
 - Users (Initial user config)
+- Minimal (Minimal installation)
 - Luks (Disk encryption)
 - Terminal (Customizing the terminal, e.g. terminal, nvim, nerdfonts, etc.)
 - Desktop (Customizing a qtile tiling window manager and related tools)
@@ -15,12 +21,7 @@ and are categorized into certain catgeories building on top of each other:
 - Extras (Everything not fitting in other categories)
 - Backup (Restore backups)
 
-Ansible playbooks to invoke groups of installers are provided.
-Each playbook might utilize data from either the templates folder
-or the snippets folder.
-Reasonable defaults are used wherever possible.
-
-## Examples
+## Usage Examples
 
 ```
 ansible-playbook playbooks/minimal.yml --vault-pass-file vault/vault_pass.txt
