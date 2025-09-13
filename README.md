@@ -186,10 +186,9 @@ Qtile as dynamic tiling window manager
 
 Some useful config files:
 
-- [Nvim](https://github.com/mpsffap/mps/blob/main/templates/dotfiles/.config/nvim/lua/main/keymap.lua)
-- [Nvim Plugins](https://github.com/mpsffap/mps/blob/main/templates/dotfiles/.config/nvim/lua/config)
+- [Nvim](https://github.com/mpsffap/mps/blob/main/templates/dotfiles/.config/nvim/lua/)
 - [Qtile](https://github.com/mpsffap/mps/blob/main/templates/dotfiles/.config/qtile/keybinds.py)
 - [Tmux](https://github.com/mpsffap/mps/blob/main/templates/dotfiles/.config/tmux/tmux.conf.local)
 - [Kitty](https://github.com/mpsffap/mps/blob/main/templates/dotfiles/.config/kitty/kitty.conf)
-- [.bashrc](https://github.com/mpsffap/mps/blob/main/templates/dotfiles/.config/.bashrc)
-- [Wallpapers](https://github.com/mpsffap/mps/blob/main/templates/dotfiles/.config/images)
+- [.bashrc](https://github.com/mpsffap/mps/blob/main/templates/dotfiles/.config/bashrc/.bashrc)
+- [Wallpapers](https://github.com/mpsffap/mps/blob/main/templates/images/wallpaper)
