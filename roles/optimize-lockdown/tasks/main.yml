@@ -6,7 +6,9 @@
     owner: "{{ ssh_user }}"
     group: "{{ ssh_user }}"
     mode: "0744"
+
   become: true
+  when: install_lockdown == true
 
 - name: Clone wrapper repo (mps-cis-debian13)
   ansible.builtin.git:
@@ -14,6 +16,7 @@
     dest: "{{ target_dir }}/mps-cis-debian13"
     force: true
   become: true
+  when: install_lockdown == true
 
 - name: Clone DEBIAN12-CIS lockdown role
   ansible.builtin.git:
@@ -21,6 +24,7 @@
     dest: "{{ target_dir }}/DEBIAN12-CIS"
     force: true
   become: true
+  when: install_lockdown == true
 
 - name: Ensure DEBIAN12-CIS directory is owned by ssh_user
   ansible.builtin.file:
@@ -31,6 +35,7 @@
     group: "{{ ssh_user }}"
     mode: "0744"
   become: true
+  when: install_lockdown == true
 
 - name: Copy wrapper contents into DEBIAN12-CIS
   ansible.builtin.copy:
@@ -42,6 +47,7 @@
     remote_src: true
   become: true
   become_user: "{{ ssh_user }}"
+  when: install_lockdown == true
 
 - name: Create inventory directory
   ansible.builtin.file:
@@ -52,6 +58,7 @@
     mode: "0744"
   become: true
   become_user: "{{ ssh_user }}"
+  when: install_lockdown == true
 
 - name: Render inventory file
   ansible.builtin.template:
@@ -62,12 +69,15 @@
     mode: "0644"
   become: true
   become_user: "{{ ssh_user }}"
+  when: install_lockdown == true
+
 - name: Install ansible
   ansible.builtin.apt:
     name:
       - ansible
     state: present
   become: true
+  when: install_lockdown == true
 
 - name: Ensure .ssh directory exists
   file:
@@ -78,7 +88,8 @@
     mode: "0700"
   become: true
   become_user: "{{ ssh_user }}"
-#
+  when: install_lockdown == true
+
 - name: Generate RSA SSH keypair if missing
   community.crypto.openssh_keypair:
     path: "/home/{{ ssh_user }}/.ssh/id_rsa"
@@ -89,13 +100,15 @@
     mode: "0600"
   become: true
   become_user: "{{ ssh_user }}"
-#
+  when: install_lockdown == true
+
 - name: Read public key
   slurp:
     src: "/home/{{ ssh_user }}/.ssh/id_rsa.pub"
   register: self_pub
   become: true
   become_user: "{{ ssh_user }}"
+  when: install_lockdown == true
 
 - name: Authorize own key
   authorized_key:
@@ -103,6 +116,7 @@
     key: "{{ self_pub['content'] | b64decode }}"
   become: true
   become_user: "{{ ssh_user }}"
+  when: install_lockdown == true
 
 - name: Run DEBIAN12-CIS site.yml playbook (log to file)
   ansible.builtin.shell: |
@@ -119,3 +133,4 @@
       -o PubkeyAuthentication=yes
       -o StrictHostKeyChecking=no
       -o UserKnownHostsFile=/dev/null
+  when: install_lockdown == true

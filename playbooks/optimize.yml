@@ -8,9 +8,9 @@
     target_dir: "/home/{{ ssh_user }}/ansible-lockdown"
 
   roles:
-    # - optimize-grubmenu
-    # - optimize-lightdm
-    # - optimize-plymouth
+    - optimize-grubmenu
+    - optimize-lightdm
+    - optimize-plymouth
     - optimize-lockdown
     # - optimize-zram
     # - optimize-ramdisks
