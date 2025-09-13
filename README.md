@@ -7,7 +7,7 @@ My Perfect System (Ansible)
 The contained tasks rely on a host configuration which itself refer to a user config.
 These configurations shall reside in a ansible-vault in the "vars" directory.
 
-A host config might look like this:
+A host config for the two hosts "hivehome" and "hivevm" might look like this:
 
 ```
 ---
@@ -32,7 +32,8 @@ config_hosts:
 
 ```
 
-A user config might look like this:
+A user config containing the four users "root", "foo", "deploy"
+and "testuser" might look like this:
 
 ```
 ---
