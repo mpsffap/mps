@@ -186,10 +186,10 @@ Qtile as dynamic tiling window manager
 
 Some useful config files:
 
-- [Nvim](https://github.com/odem/mps/blob/main/dotfiles/.config/nvim/lua/main/keymap.lua)
-- [Nvim Plugins](https://github.com/odem/mps/tree/main/dotfiles/.config/nvim/lua/config)
-- [Qtile](https://github.com/odem/mps/blob/main/dotfiles/.config/qtile/keybinds.py)
-- [Tmux](https://github.com/odem/mps/blob/main/dotfiles/.config/tmux/tmux.conf.local)
-- [Kitty](https://github.com/odem/mps/blob/main/dotfiles/.config/kitty/kitty.conf)
-- [.bashrc](https://github.com/odem/mps/blob/main/dotfiles/.bashrc)
-- [Wallpapers](https://github.com/odem/mps/tree/main/dotfiles/.config/images)
+- [Nvim](https://github.com/mpsffap/mps/blob/main/templates/dotfiles/.config/nvim/lua/main/keymap.lua)
+- [Nvim Plugins](https://github.com/mpsffap/mps/blob/main/templates/dotfiles/.config/nvim/lua/config)
+- [Qtile](https://github.com/mpsffap/mps/blob/main/templates/dotfiles/.config/qtile/keybinds.py)
+- [Tmux](https://github.com/mpsffap/mps/blob/main/templates/dotfiles/.config/tmux/tmux.conf.local)
+- [Kitty](https://github.com/mpsffap/mps/blob/main/templates/dotfiles/.config/kitty/kitty.conf)
+- [.bashrc](https://github.com/mpsffap/mps/blob/main/templates/dotfiles/.config/.bashrc)
+- [Wallpapers](https://github.com/mpsffap/mps/blob/main/templates/dotfiles/.config/images)
