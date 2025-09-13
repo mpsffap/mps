@@ -1,6 +1,5 @@
-# mps
+# MPS aka My Perfect System (Ansible)
 
-My Perfect System (Ansible)
 Not yours, but mine! So be warned!
 The system is a collection of ansible playbooks to turn a vanilla
 Debian installation into the system i like to work with.
