@@ -1,0 +1,15 @@
+---
+- name: Ensure user '{{ user.accname }}'
+  ansible.builtin.user:
+    name: "{{ user.accname }}"
+    groups: "{{ user.groups | default(omit) }}"
+    comment: "{{ user.comment | default(omit) }}"
+    shell: "{{ user.shell | default(omit) }}"
+    password: >-
+      {{
+        user.password | password_hash('sha512', (64 | random(seed=user.accname) | string))
+        if user.password is defined else omit
+      }}
+    append: true
+    state: present
+    create_home: true

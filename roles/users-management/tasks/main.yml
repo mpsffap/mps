@@ -1,0 +1,13 @@
+---
+- name: Add groups
+  import_tasks: groups.yml
+- name: Ensure admin group in sudoers file
+  import_tasks: sudo_admins.yml
+- name: Create Facts
+  import_tasks: create_facts.yml
+- name: Handle add users by host config
+  include_tasks: main_host.yml
+# - name: Handle add users by Userconfig
+#   include_tasks: main_config.yml
+# - name: Handle add users by Argument
+#   include_tasks: main_single.yml

@@ -1,0 +1,10 @@
+- hosts: hive
+  become: true
+  vars_files:
+    - ../vars/vault_users_{{ build_type }}.yml
+    - ../vars/vault_config_{{ build_type }}.yml
+  vars:
+    build_type: test
+
+  roles:
+    - users-management

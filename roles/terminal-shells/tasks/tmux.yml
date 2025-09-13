@@ -1,0 +1,36 @@
+---
+- name: Get list of identity names for this host
+  ansible.builtin.set_fact:
+    user: >-
+      {{
+        users
+        | selectattr('name', 'equalto', hostuser)
+        | selectattr('config_terminal', 'equalto', true)
+        | list
+        | first
+        | default({}, true)
+      }}
+  no_log: "{{ respect_nolog }}"
+
+- name: Copy bash config if needed
+  block:
+    - name: Copy tmux config
+      ansible.builtin.copy:
+        src: "{{ src_dotfiles }}/{{ item }}"
+        dest: "{{ user.homedir }}/.config"
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        mode: "0700"
+      loop: "{{ tmux_files }}"
+      when: tmux_files is defined
+
+    - name: Copy tmuxinator config
+      ansible.builtin.copy:
+        src: "{{ src_dotfiles }}/{{ item }}"
+        dest: "{{ user.homedir }}/.config"
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        mode: "0700"
+      loop: "{{ tmuxinator_files }}"
+      when: tmuxinator_files is defined
+  when: user != {}

@@ -1,0 +1,50 @@
+---
+- name: Get list of identity names for this host
+  ansible.builtin.set_fact:
+    user: >-
+      {{
+        users
+        | selectattr('name', 'equalto', hostuser)
+        | selectattr('config_desktop', 'equalto', true)
+        | list
+        | first
+        | default({}, true)
+      }}
+  no_log: "{{ respect_nolog }}"
+
+- name: Create mps folders
+  block:
+    - name: Copy rofi snippets
+      ansible.builtin.copy:
+        src: "{{ src_snippets }}/{{ item }}"
+        dest: "{{ dst_snippets }}"
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        mode: "0700"
+      loop: "{{ rofi_snippets }}"
+      when: rofi_snippets is defined
+
+    - name: Create rofi folder
+      ansible.builtin.file:
+        path: "{{ user.homedir }}/.config/rofi"
+        state: "directory"
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        mode: "0700"
+
+    - name: Copy rofi config
+      ansible.builtin.copy:
+        src: "{{ src_dotfiles }}/.config/rofi/config.rasi"
+        dest: "{{ user.homedir }}/.config/rofi/config.rasi"
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        mode: "0700"
+
+    - name: Copy rofi themes
+      ansible.builtin.copy:
+        src: "{{ src_dotfiles }}/.config/rofi/themes"
+        dest: "{{ user.homedir }}/.config/rofi"
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        mode: "0700"
+  when: user != {}

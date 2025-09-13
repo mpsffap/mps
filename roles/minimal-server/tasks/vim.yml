@@ -1,0 +1,24 @@
+- name: Install vim
+  become: true
+  ansible.builtin.apt:
+    name:
+      - liblua5.3-dev
+      - liblua5.1-dev
+      - lua5.1
+      - lua5.3
+      - vim-nox
+
+- name: User configs to deploy
+  debug:
+    msg: "{{ item.name }} will be {{ item.config_terminal }}"
+  loop: "{{ users }}"
+  loop_control:
+    label: " {{ item.accname }}"
+
+- name: Handle config users
+  include_tasks: vim_config.yml
+  loop: "{{ host_config.users }}"
+  loop_control:
+    loop_var: hostuser
+  when: target_user == "all"
+  no_log: "{{ respect_nolog }}"

@@ -1,0 +1,17 @@
+---
+- name: Setup mps optimizations
+  hosts: hive
+  vars:
+    ssh_port: 22
+    ssh_user: deploy
+    hostname: localhost
+    target_dir: "/home/{{ ssh_user }}/ansible-lockdown"
+
+  roles:
+    # - optimize-grubmenu
+    # - optimize-lightdm
+    # - optimize-plymouth
+    - optimize-lockdown
+    # - optimize-zram
+    # - optimize-ramdisks
+    # - optimize-tty

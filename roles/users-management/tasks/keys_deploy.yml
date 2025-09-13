@@ -1,0 +1,56 @@
+---
+- name: Deploy inline private key for user '{{ target_user }}'
+  ansible.builtin.copy:
+    dest: "{{ user.homedir }}/.ssh/{{ item.name }}"
+    content: "{{ item.private }}"
+    owner: "{{ user.accname }}"
+    group: "{{ user.accname }}"
+    mode: "0600"
+  loop: "{{ user.keypairs | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - item.private is defined
+  no_log: true
+
+- name: Deploy inline public key for user '{{ target_user }}'
+  ansible.builtin.copy:
+    dest: "{{ user.homedir }}/.ssh/{{ item.name }}.pub"
+    content: "{{ item.public }}"
+    owner: "{{ user.accname }}"
+    group: "{{ user.accname }}"
+    mode: "0644"
+  loop: "{{ user.keypairs | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - item.public is defined
+  no_log: true
+
+- name: Deploy private key from file for user '{{ target_user }}'
+  ansible.builtin.copy:
+    src: "{{ item.path }}/{{ item.name }}"
+    dest: "{{ user.homedir }}/.ssh/{{ item.name }}"
+    owner: "{{ user.accname }}"
+    group: "{{ user.accname }}"
+    mode: "0600"
+  loop: "{{ user.keypairs | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - item.path is defined
+  no_log: true
+
+- name: Deploy public key from file for user '{{ target_user }}'
+  ansible.builtin.copy:
+    src: "{{ item.path }}/{{ item.name }}.pub"
+    dest: "{{ user.homedir }}/.ssh/{{ item.name }}.pub"
+    owner: "{{ user.accname }}"
+    group: "{{ user.accname }}"
+    mode: "0644"
+  loop: "{{ user.keypairs | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - item.path is defined
+  no_log: true

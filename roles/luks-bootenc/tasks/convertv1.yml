@@ -1,0 +1,70 @@
+---
+- name: Convert to v1 block
+  block:
+    - name: Get LUKS version of the device
+      become: true
+      ansible.builtin.shell: |
+        cryptsetup luksDump {{ host_config.luks_part }} \
+        | grep '^Version:' \
+        | tr -d '\t ' \
+        | cut -d ':' -f 2
+      register: luks_version
+      changed_when: false
+
+    - name: Create initramfs breakpoint in GRUB config
+      become: true
+      block:
+        - name: Remove existing GRUB_CMDLINE_LINUX_DEFAULT lines from /etc/default/grub
+          ansible.builtin.lineinfile:
+            path: /etc/default/grub
+            regexp: "^GRUB_CMDLINE_LINUX_DEFAULT="
+            state: absent
+
+        - name: Add GRUB_CMDLINE_LINUX_DEFAULT with break=mount to /etc/default/grub
+          ansible.builtin.lineinfile:
+            path: /etc/default/grub
+            line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet splash break=mount"'
+            insertafter: EOF
+
+        - name: Update grub configuration
+          ansible.builtin.command: update-grub
+
+        - name: Write the initramfs run_once script
+          ansible.builtin.copy:
+            dest: /etc/initramfs-tools/scripts/init-premount/run_once
+            mode: "0755"
+            content: |
+              #!/bin/sh
+              # One-time LUKS conversion script for initramfs
+
+              LUKS_PART="{{ host_config.luks_part }}"
+              LUKS_PASS="{{ host_config.luks_pass }}"
+
+              if [ -f /run/luks_convert_done ]; then
+                echo "LUKS conversion already done, skipping."
+                exit 0
+              fi
+
+              printf "$LUKS_PASS\n" | cryptsetup luksConvertKey --pbkdf pbkdf2 "{{ host_config.luks_part }}" || {
+                echo "luksConvertKey failed!" > /dev/console
+                exit 1
+              }
+
+              printf "YES\n" | cryptsetup convert --type luks1 "{{ host_config.luks_part }}" || {
+                echo "cryptsetup convert failed!" > /dev/console
+                exit 1
+              }
+
+              sleep 3
+
+              cryptsetup luksDump "{{ host_config.luks_part }}" | grep "Version: "
+
+              touch /run/luks_convert_done
+
+              echo "Enter 'exit' command to boot into os"
+
+              exit 0
+
+        - name: Update initramfs image
+          ansible.builtin.command: update-initramfs -u
+      when: luks_version.stdout | trim == '2'

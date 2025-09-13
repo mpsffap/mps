@@ -1,0 +1,20 @@
+---
+- name: Get list of identity names for this host
+  ansible.builtin.set_fact:
+    host_config: >-
+      {{
+        config_hosts.hosts[inventory_hostname]
+        if inventory_hostname in config_hosts.hosts
+        else config_defaults.hosts[inventory_hostname]
+      }}
+  no_log: "{{ respect_nolog }}"
+
+- name: Include essential user dependencies
+  ansible.builtin.include_tasks: main_user.yml
+  when: enable_install_nvim
+- name: Include essential apt packages
+  ansible.builtin.include_tasks: essentials.yml
+  when: enable_install_nvim
+- name: Include nvim package
+  ansible.builtin.include_tasks: nvim.yml
+  when: enable_install_nvim

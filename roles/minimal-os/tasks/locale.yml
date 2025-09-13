@@ -1,0 +1,73 @@
+---
+- name: Set system locale file
+  ansible.builtin.copy:
+    dest: /etc/default/locale
+    content: |
+      LANG={{ default_locale }}
+      LANGUAGE={{ default_locale }}
+      LC_ALL={{ default_locale }}
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Set debconf selection for default locale
+  ansible.builtin.debconf:
+    name: locales
+    question: locales/default_environment_locale
+    value: "{{ default_locale }}"
+    vtype: select
+
+- name: Reconfigure locales (non-interactive)
+  ansible.builtin.command: dpkg-reconfigure -f noninteractive locales
+  changed_when: false
+
+- name: Install keyboard-configuration package
+  ansible.builtin.apt:
+    name: keyboard-configuration
+    state: present
+
+- name: Configure keyboard
+  ansible.builtin.copy:
+    dest: /etc/default/keyboard
+    content: |
+      XKBMODEL="{{ default_kbd_model }}"
+      XKBLAYOUT="{{ default_kbd_layout }}"
+      XKBVARIANT="{{ default_kbd_variant }}"
+      XKBOPTIONS="{{ default_kbd_options }}"
+      BACKSPACE="guess"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Reconfigure keyboard-configuration
+  ansible.builtin.command: dpkg-reconfigure -f noninteractive keyboard-configuration
+  changed_when: false
+
+- name: Install console-setup package
+  ansible.builtin.apt:
+    name: console-setup
+    state: present
+
+- name: Configure console
+  ansible.builtin.copy:
+    dest: /etc/default/console-setup
+    content: |
+      ACTIVE_CONSOLES="/dev/tty[1-6]"
+      CHARMAP="{{ default_console_charset }}"
+      CODESET="{{ default_console_codeset }}"
+      FONTFACE="{{ default_console_fontface }}"
+      FONTSIZE="{{ default_console_fontsize }}"
+      VIDEOMODE=
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Reconfigure console-setup
+  ansible.builtin.command: dpkg-reconfigure -f noninteractive console-setup
+  changed_when: false
+
+- name: Enable and restart console-setup service
+  ansible.builtin.systemd:
+    name: console-setup.service
+    enabled: true
+    state: restarted

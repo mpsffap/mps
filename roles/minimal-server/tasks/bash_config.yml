@@ -1,0 +1,74 @@
+- name: Get list of identity names for this host
+  ansible.builtin.set_fact:
+    user: >-
+      {{
+        users
+        | selectattr('name', 'equalto', hostuser)
+        | selectattr('config_terminal', 'equalto', true)
+        | list
+        | first
+        | default({}, true)
+      }}
+  no_log: "{{ respect_nolog }}"
+
+- name: Copy bash config if needed
+  block:
+    - name: Copy bash config
+      ansible.builtin.copy:
+        src: "{{ src_dotfiles }}/.bashrc"
+        dest: "{{ user.homedir }}/"
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        mode: "0700"
+
+    - name: Copy bash config
+      ansible.builtin.copy:
+        src: "{{ src_dotfiles }}/.config/bashrc"
+        dest: "{{ user.homedir }}/.config"
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        mode: "0700"
+
+    - name: Check if .bash_logout exists
+      ansible.builtin.stat:
+        path: "{{ user.homedir }}/.bash_logout"
+      ignore_errors: true
+      register: bash_logout_stat
+
+    - name: Copy .bash_logout to a custom location
+      ansible.builtin.copy:
+        src: "{{ user.homedir }}/.bash_logout"
+        dest: "{{ user.homedir }}/.config/bashrc/.bash_logout"
+        remote_src: true
+        mode: "0700"
+      when: bash_logout_stat.stat.exists
+
+    - name: Remove the original .bash_logout file
+      ansible.builtin.file:
+        path: "{{ user.homedir }}/.bash_history"
+        state: absent
+
+    - name: Remove the original .bash_logout file
+      ansible.builtin.file:
+        path: "{{ user.homedir }}/.bash_logout"
+        state: absent
+
+    - name: Remove old bashrc_alias file
+      ansible.builtin.file:
+        path: "{{ user.homedir }}/.bashrc_aliases"
+        state: absent
+
+    - name: Remove old bash_alias file
+      ansible.builtin.file:
+        path: "{{ user.homedir }}/.bash_aliases"
+        state: absent
+
+    - name: Set bash as default shell
+      ansible.builtin.shell:
+        cmd: "chsh -s /bin/bash {{ user.accname }}"
+      become: true
+
+    - name: Set kitty as default terminal
+      ansible.builtin.shell:
+        cmd: "update-alternatives --set x-terminal-emulator /usr/bin/kitty"
+  when: user != {}

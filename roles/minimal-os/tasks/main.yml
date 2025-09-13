@@ -1,0 +1,15 @@
+---
+- name: Include essential apt packages
+  ansible.builtin.include_tasks: apt-sources.yml
+- name: Include essential apt packages
+  ansible.builtin.include_tasks: essentials.yml
+- name: Include essential apt auto-upgrades
+  ansible.builtin.include_tasks: apt-auto-upgrades.yml
+- name: Include locale
+  ansible.builtin.include_tasks: locale.yml
+- name: Include time
+  ansible.builtin.include_tasks: time.yml
+- name: Include essential apparmor packages
+  ansible.builtin.include_tasks: apparmor.yml
+- name: Include essential auditd packages
+  ansible.builtin.include_tasks: auditd.yml

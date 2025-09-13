@@ -1,0 +1,46 @@
+#include <tunables/global>
+abi <abi/4.0>,
+
+include <tunables/global>
+
+profile runc flags=(attach_disconnected, mediate_deleted) {
+  #include <abstractions/base>
+  owner @{HOME}/** rwm,
+  #network,
+  #capability,
+  #file,
+  #umount,
+  #ptrace,
+  #mount,
+  pivot_root,
+
+  # Allow all network traffic
+  network,
+
+  # Allow all capabilities
+  capability,
+
+  # Allow all file operations
+  file,
+
+  # Allow all unix socket operations
+  unix,
+
+  # Deny writes to sensitive files, using the hardcoded path
+  deny /proc/sysrq-trigger w,
+  deny /proc/mem w,
+  deny /proc/kmem w,
+  deny /sys/devices/virtual/powercap/intel-rapl/** w,
+  deny /sys/firmware/acpi/osd/eject w,
+  deny /dev/kmsg w,
+
+  # Allow necessary access for runc and container operation
+  owner /proc/** r,
+  owner /sys/fs/cgroup/** r,
+  owner /dev/null rw,
+  owner /dev/zero rw,
+  owner /dev/fuse rwk,
+  owner /run/containerd/io.containerd.runtime.v2.task/moby/*/exec.fifo w,
+  owner /run/docker/runtime-runc/moby/** w,
+  owner /var/lib/docker/** r,
+}

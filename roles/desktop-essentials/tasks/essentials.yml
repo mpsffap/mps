@@ -1,0 +1,80 @@
+---
+- name: Essentials Desktop
+  ansible.builtin.apt:
+    name:
+      - galculator
+      - numlockx
+      - xclip
+      - arandr
+      - lxappearance
+      - psutils
+      - iw
+      - xcwd
+      - zoxide
+      - kitty
+      - tilda
+      - thunderbird
+      - firefox-esr
+      - evince
+      - thunar
+      - thunar-archive-plugin
+      - thunar-media-tags-plugin
+      - thunar-volman
+      - thunar-gtkhash
+      - xfce4-goodies
+      - xfce4-places-plugin
+      - thunar-font-manager
+      - thunarx-python
+      - ssh-askpass
+      - plymouth
+      - plymouth-themes
+    state: present
+  become: true
+
+- name: Essentials WM
+  ansible.builtin.apt:
+    name:
+      - feh
+      - lightdm
+      - picom
+      - xbacklight
+      - pulseaudio
+      - pavucontrol
+      - volumeicon-alsa
+      - libmpg123-dev
+      - lxde-icon-theme
+      - dconf-cli
+      - dconf-editor
+      - dunst
+
+    state: present
+  become: true
+
+- name: Essentials Gnome
+  ansible.builtin.apt:
+    name:
+      - gnome-system-monitor
+      - network-manager-gnome
+      - gnome-screenshot
+      - gnome-extra-icons
+      - gedit
+      - gedit-plugins
+    state: present
+  become: true
+
+- name: Essentials CONSOLE X11
+  ansible.builtin.apt:
+    name:
+      - xorg
+      - xserver-xorg-video-nouveau
+      - xserver-xorg-video-vesa
+      - xterm
+      - mesa-utils
+      - freeglut3-dev
+      - libglm-dev
+      - libao-dev
+      - libxinerama-dev
+      - libxft-dev
+      - libglu1-mesa-dev
+    state: present
+  become: true

@@ -1,0 +1,18 @@
+---
+- name: Essentials OS
+  ansible.builtin.apt:
+    name:
+      - curl
+      - wget
+      - gnupg
+      - vim
+      - lsb-release
+      - debconf
+      - debconf-utils
+      - fontconfig
+      - psutils
+      - psmisc
+      - htop
+      - rsyslog
+    state: present
+  become: true

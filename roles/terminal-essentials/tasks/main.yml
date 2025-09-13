@@ -1,0 +1,6 @@
+---
+- name: Include essential apt packages
+  ansible.builtin.include_tasks: essentials.yml
+
+- name: Include sshd
+  ansible.builtin.include_tasks: sshd.yml

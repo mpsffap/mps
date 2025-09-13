@@ -1,0 +1,19 @@
+---
+# Global
+target_user: "jb"
+target_user_dir: "/home/jb"
+
+# Version
+mps_version: "0.0.1"
+
+# Logging
+respect_nolog: true
+
+# Build config ("test" or "prod")
+# Used to source vault variables
+build_type: test
+
+# terminal
+enable_install_nvim: false
+enable_install_yazi: false
+enable_install_zsh: false

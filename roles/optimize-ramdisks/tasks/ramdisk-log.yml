@@ -1,0 +1,33 @@
+---
+- name: Unmount log
+  ansible.builtin.command: umount /var/log
+  ignore_errors: true
+
+- name: Remove log dir
+  ansible.builtin.file:
+    path: "/var/log"
+    owner: "root"
+    group: "root"
+    state: "absent"
+
+- name: Create log directory
+  ansible.builtin.file:
+    path: /var/log
+    owner: "root"
+    group: "root"
+    mode: "0777"
+    state: directory
+
+- name: Ensure mountpoint in fstab
+  lineinfile:
+    path: "/etc/fstab"
+    regexp: "^tmpfs /var/log"
+    line: "tmpfs /var/log tmpfs mode=1777,nosuid,nodev 0 0"
+    state: present
+
+- name: Reload systemd manager configuration
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Remount all filesystems
+  ansible.builtin.command: mount -a

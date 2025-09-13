@@ -1,0 +1,22 @@
+---
+- name: Ensure .ssh directory exists for user '{{ user.accname }}'
+
+  ansible.builtin.file:
+    path: "{{ user.homedir }}/.ssh/"
+    state: directory
+    owner: "{{ user.accname }}"
+    group: "{{ user.accname }}"
+    mode: "0700"
+
+- name: Deploy SSH keypairs  for user '{{ user.accname }}'
+  include_tasks: keys_deploy.yml
+  no_log: true
+  when:
+    - user.keypairs is defined
+    - user.keypairs | length > 0
+
+- name: Generate SSH keypairs for user '{{ user.accname }}'
+  include_tasks: keys_generate.yml
+  no_log: true
+  when:
+    - user.keygen is defined

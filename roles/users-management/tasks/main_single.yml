@@ -1,0 +1,15 @@
+- name: Handle add users for user '{{ hostuser }}'
+  include_tasks: handle_add.yml
+  loop: "{{ filtered_users }}"
+  loop_control:
+    loop_var: user
+  when: hostuser != "" and user_action == "add"
+  no_log: true
+
+- name: Handle delete users for user '{{ hostuser }}'
+  include_tasks: handle_delete.yml
+  loop: "{{ filtered_users }}"
+  loop_control:
+    loop_var: user
+  when: hostuser != "" and user_action == "delete"
+  no_log: true

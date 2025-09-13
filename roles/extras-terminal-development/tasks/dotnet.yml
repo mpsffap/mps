@@ -1,0 +1,37 @@
+---
+- name: Get list of identity names for this host
+  ansible.builtin.set_fact:
+    user: >-
+      {{
+        users
+        | selectattr('name', 'equalto', hostuser)
+        | selectattr('config_develop', 'equalto', true)
+        | list
+        | first
+        | default({}, true)
+      }}
+  no_log: "{{ respect_nolog }}"
+
+- name: Create mps folders
+  block:
+    - name: Download dotnet-install.sh script
+      ansible.builtin.get_url:
+        url: "{{ url_dotnet_installer }}"
+        dest: /tmp/dotnet-install.sh
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        mode: "0700"
+
+    - name: Make the dotnet-install.sh script executable
+      ansible.builtin.file:
+        path: /tmp/dotnet-install.sh
+        mode: "u+x"
+
+    - name: Run dotnet-install.sh script
+      ansible.builtin.command: /tmp/dotnet-install.sh --version latest
+
+    - name: Remove dotnet-install.sh script
+      ansible.builtin.file:
+        path: /tmp/dotnet-install.sh
+        state: absent
+  when: user != {}

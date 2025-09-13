@@ -1,0 +1,7 @@
+- name: Handle bash users
+  include_tasks: bash_config.yml
+  loop: "{{ host_config.users }}"
+  loop_control:
+    loop_var: hostuser
+  when: target_user == "all"
+  no_log: "{{ respect_nolog }}"

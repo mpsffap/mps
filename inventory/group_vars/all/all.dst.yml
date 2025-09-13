@@ -1,0 +1,23 @@
+---
+# -- DST
+dst_grub: "/boot/grub"
+dst_themefiles: "/boot/grub/themes"
+dst_iconfiles: "/boot/grub/icons"
+dst_images: "/usr/share/images/mps"
+dst_qtile_repo: "/usr/share/mps/tools/qtile"
+dst_snippets: "/usr/share/rofi/themes"
+dst_mpsnvim: "{{ target_user_dir }}/mps/repo/github/odem/mps"
+dst_unity_key: "/usr/share/keyrings/Unity_Technologies_ApS.gpg"
+dst_nvidia_mok_key: "/var/lib/dkms/mok.pub"
+dst_dxvk_repo: "/opt/dxvk"
+dst_lutris_runtime: "{{ target_user_dir }}/.local/share/lutris/runtime"
+dst_docker_keyring_dir: /etc/apt/keyrings
+dst_docker_key: /etc/apt/keyrings/docker.asc
+dst_docker_list: /etc/apt/sources.list.d/docker.list
+dst_docker_root: /opt/docker
+dst_fontdir: /usr/share/fonts
+dst_user_font_dir: "{{ target_user_dir }}/.local/share/fonts"
+dst_tools: "/usr/share/mps/tools"
+dst_rustup_sh: "/usr/share/mps/tools/rustup/rustup.sh"
+dst_neovim: "/usr/share/mps/tools/nvim"
+dst_lazygit: "/usr/share/mps/tools/lazygit"

@@ -1,0 +1,18 @@
+- name: Install packages
+  ansible.builtin.apt:
+    name:
+      - zram-tools
+    state: present
+  become: true
+
+- name: Add log entry to fstab
+  ansible.builtin.blockinfile:
+    path: /etc/default/zramswap
+    marker: "# MPS: zramswap"
+    block: "ALGO=zstd\nPERCENT=10"
+    insertafter: EOF
+
+- name: Restart zramswap service
+  ansible.builtin.systemd:
+    name: zramswap
+    state: restarted

@@ -1,0 +1,27 @@
+---
+- name: Install essentials rofi
+  ansible.builtin.apt:
+    name:
+      - rofi
+      # - check
+      # - automake
+      # - bison
+      # - flex
+      # - xcb
+      # - libxcb-keysyms1
+      # - libxcb-keysyms1-dev
+      # - libxcb-icccm4-dev
+      # - libxcb-ewmh-dev
+      # - libxcb-cursor-dev
+      # - libxcb-randr0-dev
+      # - libxcb-util0-dev
+      # - libxcb-xinerama0-dev
+      # - libxkbcommon-x11-dev
+      # - libstartup-notification0-dev
+      # - libglib2.0-dev
+      # - libcairo2-dev
+      # - libpangocairo-1.0-0
+      # - libpango1.0-dev
+      # - libgdk-pixbuf-2.0-dev
+    state: present
+  become: true

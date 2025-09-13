@@ -1,0 +1,32 @@
+---
+- name: Install essentials qtile
+  ansible.builtin.apt:
+    name:
+      - python3-psutil
+      - python3-pip
+      - python-dbus-dev
+      - python3-pulsectl
+      - git
+      - libpangocairo-1.0-0
+      - lightdm
+      - lightdm-gtk-greeter
+    state: present
+  become: true
+
+- name: Clone qtile repo
+  ansible.builtin.git:
+    repo: "{{ url_qtile }}"
+    dest: "{{ dst_qtile_repo }}"
+    bare: false
+    update: false
+    clone: true
+    single_branch: true
+    version: "master"
+
+- name: Install qtile
+  ansible.builtin.pip:
+    name: qtile
+    extra_args: "--break-system-packages --upgrade --ignore-installed"
+    state: present
+    chdir: "{{ dst_qtile_repo }}"
+  become: true

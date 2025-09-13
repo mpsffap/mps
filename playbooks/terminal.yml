@@ -1,0 +1,16 @@
+---
+- name: Setup mps terminal
+  hosts: hive
+  become: true
+  vars:
+    build_type: test
+  vars_files:
+    - "../vars/vault_users_{{ build_type }}.yml"
+    - "../vars/vault_config_{{ build_type }}.yml"
+  roles:
+    - terminal-essentials
+    - terminal-homedir
+    - terminal-shells
+    - terminal-fonts
+    - terminal-nvim
+    - terminal-yazi

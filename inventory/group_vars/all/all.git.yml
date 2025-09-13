@@ -1,0 +1,4 @@
+---
+# -- Git
+git_config:
+  - .gitconfig

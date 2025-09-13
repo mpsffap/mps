@@ -1,0 +1,8 @@
+---
+- name: Ensure admin group has sudo access
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^%{{ admin_group }}\s+ALL=\(ALL:ALL\)\s+ALL'
+    line: "%{{ admin_group }} ALL=(ALL:ALL) ALL"
+    validate: "visudo -cf %s"

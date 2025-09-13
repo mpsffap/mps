@@ -1,0 +1,121 @@
+---
+- name: Ensure target directory exists
+  ansible.builtin.file:
+    path: "{{ target_dir }}"
+    state: directory
+    owner: "{{ ssh_user }}"
+    group: "{{ ssh_user }}"
+    mode: "0744"
+  become: true
+
+- name: Clone wrapper repo (mps-cis-debian13)
+  ansible.builtin.git:
+    repo: "https://github.com/mpsffap/mps-cis-debian13"
+    dest: "{{ target_dir }}/mps-cis-debian13"
+    force: true
+  become: true
+
+- name: Clone DEBIAN12-CIS lockdown role
+  ansible.builtin.git:
+    repo: "https://github.com/ansible-lockdown/DEBIAN12-CIS"
+    dest: "{{ target_dir }}/DEBIAN12-CIS"
+    force: true
+  become: true
+
+- name: Ensure DEBIAN12-CIS directory is owned by ssh_user
+  ansible.builtin.file:
+    path: "{{ target_dir }}/DEBIAN12-CIS"
+    state: directory
+    recurse: true
+    owner: "{{ ssh_user }}"
+    group: "{{ ssh_user }}"
+    mode: "0744"
+  become: true
+
+- name: Copy wrapper contents into DEBIAN12-CIS
+  ansible.builtin.copy:
+    src: "{{ target_dir }}/mps-cis-debian13/"
+    dest: "{{ target_dir }}/DEBIAN12-CIS/"
+    owner: "{{ ssh_user }}"
+    group: "{{ ssh_user }}"
+    mode: "0744"
+    remote_src: true
+  become: true
+  become_user: "{{ ssh_user }}"
+
+- name: Create inventory directory
+  ansible.builtin.file:
+    path: "{{ target_dir }}/DEBIAN12-CIS/inventory"
+    state: directory
+    owner: "{{ ssh_user }}"
+    group: "{{ ssh_user }}"
+    mode: "0744"
+  become: true
+  become_user: "{{ ssh_user }}"
+
+- name: Render inventory file
+  ansible.builtin.template:
+    src: "{{ src_lockdown }}/hosts.j2"
+    dest: "{{ target_dir }}/DEBIAN12-CIS/inventory/hosts"
+    owner: "{{ ssh_user }}"
+    group: "{{ ssh_user }}"
+    mode: "0644"
+  become: true
+  become_user: "{{ ssh_user }}"
+- name: Install ansible
+  ansible.builtin.apt:
+    name:
+      - ansible
+    state: present
+  become: true
+
+- name: Ensure .ssh directory exists
+  file:
+    path: "/home/{{ ssh_user }}/.ssh"
+    state: directory
+    owner: "{{ ssh_user }}"
+    group: "{{ ssh_user }}"
+    mode: "0700"
+  become: true
+  become_user: "{{ ssh_user }}"
+#
+- name: Generate RSA SSH keypair if missing
+  community.crypto.openssh_keypair:
+    path: "/home/{{ ssh_user }}/.ssh/id_rsa"
+    type: rsa
+    size: 4096
+    owner: "{{ ssh_user }}"
+    group: "{{ ssh_user }}"
+    mode: "0600"
+  become: true
+  become_user: "{{ ssh_user }}"
+#
+- name: Read public key
+  slurp:
+    src: "/home/{{ ssh_user }}/.ssh/id_rsa.pub"
+  register: self_pub
+  become: true
+  become_user: "{{ ssh_user }}"
+
+- name: Authorize own key
+  authorized_key:
+    user: "{{ ssh_user }}"
+    key: "{{ self_pub['content'] | b64decode }}"
+  become: true
+  become_user: "{{ ssh_user }}"
+
+- name: Run DEBIAN12-CIS site.yml playbook (log to file)
+  ansible.builtin.shell: |
+    set -o pipefail
+    /usr/bin/ansible-playbook -i inventory/hosts site.yml -v \
+      2>&1 | tee /home/{{ ssh_user }}/ansible-lockdown/ansible-lockdown.log
+  args:
+    chdir: "{{ target_dir }}/DEBIAN12-CIS"
+  environment:
+    ANSIBLE_HOST_KEY_CHECKING: "False"
+    ANSIBLE_SSH_CONTROL_PATH: "none"
+    ANSIBLE_SSH_ARGS: >
+      -o PreferredAuthentications=publickey
+      -o PubkeyAuthentication=yes
+      -o StrictHostKeyChecking=no
+      -o UserKnownHostsFile=/dev/null

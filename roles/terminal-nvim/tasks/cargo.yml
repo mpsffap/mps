@@ -1,0 +1,62 @@
+---
+- name: Get list of identity names for this host
+  ansible.builtin.set_fact:
+    user: >-
+      {{
+        users
+        | selectattr('name', 'equalto', hostuser)
+        | selectattr('config_terminal', 'equalto', true)
+        | list
+        | first
+        | default({}, true)
+      }}
+  no_log: "{{ respect_nolog }}"
+
+- name: Copy bash config if needed
+  block:
+    - name: Ensure Rustup directory exists
+      ansible.builtin.file:
+        path: "{{ dst_tools }}/rustup"
+        state: directory
+        mode: "0755"
+
+    - name: Download rustup installation script
+      ansible.builtin.get_url:
+        url: "{{ url_rustup }}"
+        dest: "{{ dst_rustup_sh }}"
+        mode: "0755"
+
+    - name: Run rustup installation script if not already installed
+      ansible.builtin.shell:
+        cmd: "{{ dst_rustup_sh }} -y"
+        creates: "{{ user.homedir }}/.cargo/env"
+      become: true
+      become_user: "{{ user.accname }}"
+
+    - name: Add Rust to PATH in .bashrc if not already present
+      ansible.builtin.lineinfile:
+        path: "{{ user.homedir }}/.bashrc"
+        line: 'export PATH="$PATH:$HOME/.cargo/bin"'
+        state: present
+        insertafter: EOF
+      become: true
+      become_user: "{{ user.accname }}"
+
+    - name: Check if cargo tools are already installed
+      ansible.builtin.stat:
+        path: "{{ user.homedir }}/.cargo/bin/fd"
+      register: cargo_fd
+
+    - name: Install Cargo tools only if not already installed
+      ansible.builtin.shell: |
+        source {{ user.homedir }}/.cargo/env
+        cargo install fd-find tree-sitter-cli
+      args:
+        executable: /bin/bash
+      environment:
+        CARGO_HOME: "{{ user.homedir }}/.cargo"
+        PATH: "{{ user.homedir }}/.cargo/bin:{{ ansible_env.PATH }}"
+      when: not cargo_fd.stat.exists
+      become: true
+      become_user: "{{ user.accname }}"
+  when: user != {}

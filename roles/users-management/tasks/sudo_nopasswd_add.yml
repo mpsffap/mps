@@ -1,0 +1,10 @@
+---
+- name: Create sudoers files for deployment user '{{ user.accname }}'
+  ansible.builtin.copy:
+    dest: "/etc/sudoers.d/{{ user.accname }}"
+    content: "{{ user.accname }} ALL=(ALL) NOPASSWD:ALL"
+    owner: root
+    group: root
+    mode: "0440"
+  when: user.deployment | default(false)
+  no_log: true

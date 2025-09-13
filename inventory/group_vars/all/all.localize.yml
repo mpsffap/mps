@@ -1,0 +1,18 @@
+---
+# -- Locale
+default_locale: "en_US.UTF-8"
+
+# Timezone
+default_timezone: "Europe/Berlin"
+
+# -- Keyboard
+default_kbd_model: "pc105"
+default_kbd_layout: "de"
+default_kbd_variant: "nodeadkeys"
+default_kbd_options: "compose:menu"
+
+# -- Console
+default_console_charset: "UTF-8"
+default_console_codeset: "Lat15"
+default_console_fontface: "Terminus"
+default_console_fontsize: "8x16"

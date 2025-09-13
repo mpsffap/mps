@@ -1,0 +1,22 @@
+- name: Install kmscon packages
+  ansible.builtin.apt:
+    name:
+      - kmscon
+    state: present
+  become: true
+
+- name: Create kmscon folder
+  ansible.builtin.file:
+    path: "/etc/kmscon"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: Copy config file
+  ansible.builtin.copy:
+    src: "{{ src_etcfiles }}/kmscon/kmscon.conf"
+    dest: "/etc/kmscon"
+    owner: "root"
+    group: "root"
+    mode: "0755"

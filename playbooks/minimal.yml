@@ -1,0 +1,13 @@
+---
+- name: Setup mps minimal
+  hosts: hive
+  become: true
+  vars:
+    build_type: test
+  vars_files:
+    - "../vars/vault_users_{{ build_type }}.yml"
+    - "../vars/vault_config_{{ build_type }}.yml"
+  roles:
+    - minimal-os
+    - minimal-files
+    - minimal-server

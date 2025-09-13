@@ -1,0 +1,44 @@
+---
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Ensure apt essentials are installed
+  ansible.builtin.apt:
+    name:
+      - apt-utils
+      - apt-transport-https
+      - ca-certificates
+    state: present
+
+- name: Copy apt sources
+  ansible.builtin.template:
+    src: "{{ src_etcfiles }}/apt/sources.list"
+    dest: "/etc/apt/sources.list"
+    owner: "root"
+    group: "root"
+    mode: "0744"
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Upgrade all packages
+  ansible.builtin.apt:
+    upgrade: dist
+    autoremove: true
+
+- name: Upgrade all packages
+  ansible.builtin.apt:
+    upgrade: full
+    autoremove: true
+
+- name: Ensure apt-utils is installed
+  ansible.builtin.apt:
+    name:
+      - apt-utils
+      - apt-file
+      - apt-transport-https
+      - ca-certificates
+    autoremove: true
+    state: present

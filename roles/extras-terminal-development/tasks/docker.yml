@@ -1,0 +1,76 @@
+---
+- name: Ensure Docker keyring directory exists
+  ansible.builtin.file:
+    path: "{{ dst_docker_keyring_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Download Docker GPG key
+  ansible.builtin.get_url:
+    url: "{{ url_docker_gpg }}"
+    dest: "{{ dst_docker_key }}"
+    mode: "0644"
+    force: true
+
+- name: Add Docker APT repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by={{ dst_docker_key }}] {{ url_docker_repo }} {{ ansible_lsb.codename }} stable"
+    filename: docker
+    state: present
+    update_cache: true
+
+- name: Install Docker packages
+  ansible.builtin.apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+    autoremove: true
+    update_cache: true
+
+- name: Configure Docker daemon with overlay storage
+  ansible.builtin.copy:
+    dest: /etc/docker/daemon.json
+    content: |
+      {
+        "data-root": "{{ dst_docker_root }}/overlays"
+      }
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Create Docker volumes directory
+  ansible.builtin.file:
+    path: "{{ dst_docker_root }}/volumes"
+    state: directory
+    mode: "0755"
+    owner: root
+    group: docker
+    recurse: true
+
+- name: Create Docker overlays directory
+  ansible.builtin.file:
+    path: "{{ dst_docker_root }}/overlays"
+    state: directory
+    mode: "0755"
+    owner: root
+    group: docker
+    recurse: true
+
+- name: Ensure ownership of Docker root directory
+  ansible.builtin.file:
+    path: "{{ dst_docker_root }}"
+    state: directory
+    recurse: true
+    owner: root
+    group: docker
+    mode: "0755"
+
+- name: Restart Docker to apply daemon changes
+  ansible.builtin.systemd:
+    name: docker
+    state: restarted
+    enabled: true

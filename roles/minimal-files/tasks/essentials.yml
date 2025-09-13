@@ -1,0 +1,16 @@
+- name: Essentials FILES
+  ansible.builtin.apt:
+    name:
+      - fd-find
+      - fzf
+      - bat
+      - eza
+      - tree
+      - ranger
+      - ncdu
+      - zoxide
+      - entr
+      - ripgrep
+      - jq
+    state: present
+  become: true

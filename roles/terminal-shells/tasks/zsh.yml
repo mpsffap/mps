@@ -1,0 +1,85 @@
+---
+- name: Get list of identity names for this host
+  ansible.builtin.set_fact:
+    user: >-
+      {{
+        users
+        | selectattr('name', 'equalto', hostuser)
+        | selectattr('config_terminal', 'equalto', true)
+        | list
+        | first
+        | default({}, true)
+      }}
+  no_log: "{{ respect_nolog }}"
+
+- name: Copy bash config if needed
+  block:
+    - name: Install zsh
+      become: true
+      ansible.builtin.apt:
+        name:
+          - zsh
+
+    - name: Download ohmyzsh
+      ansible.builtin.get_url:
+        url: "{{ url_ohmyzsh }}"
+        dest: "{{ user.homedir }}/ohmyzsh.sh"
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        mode: "0700"
+        validate_certs: no
+
+    - name: Delete zsh config
+      ansible.builtin.file:
+        path: "{{ user.homedir }}/.oh-my-zsh"
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        state: "absent"
+
+    - name: Change Ownership zsh config
+      ansible.builtin.file:
+        path: "{{ user.homedir }}/ohmyzsh.sh"
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        mode: "0770"
+
+    - name: Exec ohmyzsh
+      ansible.builtin.shell:
+        cmd: 'bash -c "echo n | {{ user.homedir }}/ohmyzsh.sh"'
+      become: true
+      become_user: "{{ user.accname }}"
+      register: zshoutput
+      changed_when: zshoutput.rc == 0
+
+    - name: Delete ohmyzsh
+      ansible.builtin.file:
+        path: "{{ user.homedir }}/ohmyzsh.sh"
+        state: "absent"
+
+    - name: Copy zsh config
+      ansible.builtin.copy:
+        src: "{{ src_dotfiles }}/{{ item }}"
+        dest: "{{ user.homedir }}/{{ item }}"
+        owner: "{{ user.accname }}"
+        group: "{{ user.accname }}"
+        mode: "0700"
+      loop: "{{ zsh_files }}"
+      when: zsh_files is defined
+
+    - name: Delete zsh config
+      ansible.builtin.file:
+        path: "{{ user.homedir }}/.oh-my-zsh/custom/plugins/"
+        state: "absent"
+
+    - name: Clone zsh repos
+      ansible.builtin.git:
+        repo: "{{ item.value }}"
+        dest: "{{ user.homedir }}/.oh-my-zsh/custom/plugins/{{ item.key }}"
+        bare: false
+        update: false
+        clone: true
+        single_branch: true
+        version: "master"
+      loop: "{{ zsh_plugins | dict2items }}"
+      when: zsh_plugins is defined
+  when: user != {}

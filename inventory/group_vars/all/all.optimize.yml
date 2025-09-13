@@ -1,0 +1,9 @@
+---
+# -- Grub
+grub_theme: anon
+grub_icon: light
+grub_icons:
+  - light
+grub_themes:
+  - anon
+  - showroom

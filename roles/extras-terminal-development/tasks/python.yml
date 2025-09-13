@@ -1,0 +1,7 @@
+---
+- name: Install essentials python
+  ansible.builtin.apt:
+    name:
+      - python3-full
+    state: present
+  become: true
