@@ -114,16 +114,18 @@ users:
 
 ```
 
-The filenames must follow the following name pattern:
+The actual build_type is configured in "inventory/group_vars/all/all.common.yml.
+The default is "test".
+The filenames must therefore adhere to the following name pattern:
 
 ```
 # Config
-vault_config_prod.yml for a production host config
-vault_config_test.yml for a test host config
+vars/vault_config_prod.yml for a production host config
+vars/vault_config_test.yml for a test host config
 
 # Users
-vault_users_prod.yml for a production user config
-vault_users_test.yml for a test user config
+vars/vault_users_prod.yml for a production user config
+vars/vault_users_test.yml for a test user config
 ```
 
 A vault-pass-file is assumed to be located in the "vault" directory.
