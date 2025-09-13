@@ -68,4 +68,7 @@ export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
 #--- Zoxide -------------------------------------------------------------------
 eval "$(zoxide init bash)"
 
+
+if [[ -d  "$HOME/.cargo/env" ]]; then
 . "$HOME/.cargo/env"
+fi

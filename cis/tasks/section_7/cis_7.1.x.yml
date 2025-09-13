@@ -77,7 +77,7 @@
     path: /etc/shadow
     owner: root
     group: root
-    mode: "ugo-rwx"
+    mode: "0600"
 
 - name: "7.1.6 | PATCH | Ensure permissions on /etc/shadow- are configured"
   when: deb12cis_rule_7_1_6
@@ -93,7 +93,7 @@
     path: /etc/shadow
     owner: root
     group: root
-    mode: "ugo-rwx"
+    mode: "0600"
 
 - name: "7.1.7 | PATCH | Ensure permissions on /etc/gshadow are configured"
   when: deb12cis_rule_7_1_7
